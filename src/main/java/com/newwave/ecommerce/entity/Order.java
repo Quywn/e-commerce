@@ -1,4 +1,4 @@
-package com.newwave.ecommerce.common_model;
+package com.newwave.ecommerce.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -21,7 +21,7 @@ public class Order implements Serializable {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime orderDate;
-    private Map<Product, Integer> orderedProductsList;
+    private Map<Product, String> orderedProductsList;
     private double totalPrice;
     private String status;
 }
