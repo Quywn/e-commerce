@@ -1,4 +1,4 @@
-package com.newwave.ecommerce.common;
+package com.newwave.ecommerce.domain;
 
 import lombok.Data;
 

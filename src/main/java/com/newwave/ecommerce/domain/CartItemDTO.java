@@ -1,11 +1,8 @@
-package com.newwave.ecommerce.common;
+package com.newwave.ecommerce.domain;
 
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 
 public class CartItemDTO {
-    @NotNull
-    private Integer productId;
 
     private String productName;
 

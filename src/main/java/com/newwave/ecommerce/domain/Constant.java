@@ -1,9 +1,9 @@
-package com.newwave.ecommerce.common;
+package com.newwave.ecommerce.domain;
 
 import lombok.Getter;
 
 public class Constant {
-//    public static final String JWT_SECRET = "secret";
+    public static final String JWT_SECRET = "secret";
 
     @Getter
     public enum Rating {

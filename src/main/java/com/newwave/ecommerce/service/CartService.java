@@ -1,10 +1,11 @@
 package com.newwave.ecommerce.service;
 
-
+import com.newwave.ecommerce.entity.Product;
 
 public interface CartService {
-    //thêm sản phẩm vào giỏ hàng
-    //xóa sản phẩm khỏi giỏ hàng
-    //cập nhật số lượng sản phẩm public Cart
+    //user
+    public boolean addProductToCart(Product product);
+    public boolean removeProductFromCart(Product product);
+    public Double calTotalPrice();
 
 }

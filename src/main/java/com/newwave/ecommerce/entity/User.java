@@ -1,12 +1,13 @@
 package com.newwave.ecommerce.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 
 import java.io.Serial;
 import java.io.Serializable;
 
-@Getter
+@Data
 @Entity
 public class User implements Serializable {
     @Serial
@@ -17,9 +18,6 @@ public class User implements Serializable {
     private Long userId;
     private String username;
     private String password;
-//    @ElementCollection
-//    @CollectionTable(name = "permissionList", joinColumns = @JoinColumn(name = "userId"))
-//    private List<Permission> permissionList;
     private String email;
     private String phone;
     private String address;
