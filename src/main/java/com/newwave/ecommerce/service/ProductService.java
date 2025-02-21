@@ -6,13 +6,14 @@ import com.newwave.ecommerce.entity.Product;
 import java.util.List;
 
 public interface ProductService {
+    List<Product> getAllProducts();
     //admin
-    public boolean addProduct(Product product);
-    public boolean removeProduct(Product product);
+    void addProduct(ProductDTO productDTO);
+    String removeProductByName(String productName);
 
     //user
     //tìm kiếm sản phẩm
-    public ProductDTO getProductByName(String name);
-    public List<Product> arrangeProductList(List<Product> productList);
+    ProductDTO getProductByName(String name);
+//    List<Product> arrangeProductListA_Z(List<Product> productList);
     //phân trang sản phẩm theo giá tiền 0-5, 5-10, >10
 }
