@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -19,12 +20,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public List<ProductDTO> getAllProducts() {
-         productRepo.findAll();
-         return null;
+          productRepo.findAll();
+        return null;
     }
     @Override
     public ProductDTO addProduct(ProductDTO product) {
-        if (productRepo.findByProductName(product.getProductName()) != null) {
+        if (productRepo.findByProductName(product.getProductName()).isPresent()) {
             System.out.println("Product exists");
 
         }
@@ -46,29 +47,25 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public String removeProductByName(String productName) {
-        if (productRepo.findByProductName(productName) != null) {
-            System.out.println("Product Not Found");
+        Optional<Product> product = productRepo.findByProductName(productName);
+
+        if (product.isPresent()) {
+            productRepo.delete(product.get());
+            return "Product removed: "+ product.get().getProductName();
         }
-        try {
-            productRepo.deleteProductByProductName(productName);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
+        return "Product not found";
     }
 
     @Override
     public ProductDTO getProductByName(String name) {
-        Product product = productRepo.findByProductName(name);
-        if (product == null) {
-            return null;
-        }
-        return ProductDTO.builder()
-                .productName(product.getProductName())
-                .quantity(product.getQuantity())
-                .price(product.getPrice())
-                .imageUrl(product.getImageUrl())
-                .build();
+        Optional<Product> product = productRepo.findByProductName(name);
+        return product.map(value -> ProductDTO.builder()
+                .productName(value.getProductName())
+                .quantity(value.getQuantity())
+                .price(value.getPrice())
+                .imageUrl(value.getImageUrl())
+                .build()).orElse(null);
+
     }
 
     @Override

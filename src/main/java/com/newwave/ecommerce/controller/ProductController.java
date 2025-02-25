@@ -43,11 +43,6 @@ public class ProductController {
 
     @DeleteMapping("/product")
     public ResponseEntity<String> removeProductByName(@RequestBody String productName) {
-        try {
-            productService.removeProductByName(productName);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return new ResponseEntity<>("Success", HttpStatus.OK);
+        return new ResponseEntity<>( productService.removeProductByName(productName), HttpStatus.OK);
     }
 }
