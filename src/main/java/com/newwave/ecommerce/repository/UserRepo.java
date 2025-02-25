@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface UserRepo extends JpaRepository<User,Integer> {
     User findByUsername(String username);
     User findByEmail(String email);
-    void updateEmailByUsername(String email);
-    void updatePasswordByUsername(String password);
+//    void updateEmailByUsername(String email);
+//    void updatePasswordByUsername(String password);
 }

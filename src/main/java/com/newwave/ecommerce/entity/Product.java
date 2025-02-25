@@ -1,9 +1,6 @@
 package com.newwave.ecommerce.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -25,19 +22,18 @@ public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;
-
-    @NotNull
+    @Column(name = "product_name", nullable = false)
     private String productName;
 
-    @NotNull
     @DecimalMin(value = "0.00")
+    @Column(name = "price")
     private double price;
 
     @NotNull
     @Min(value = 0)
+    @Column(name = "quantity")
     private int quantity;
 
+    @Column(name = "image_url")
     private String imageUrl;
 }

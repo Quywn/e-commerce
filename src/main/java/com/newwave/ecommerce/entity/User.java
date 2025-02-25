@@ -22,12 +22,13 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long userId;
-    @NotNull
+    @Column(name = "user_name", nullable = false)
     private String username;
-    @NotNull
+    @Column(name = "password", nullable = false)
     private String password;
-    @NotNull
+    @Column(name = "email", nullable = false)
     private String email;
 
 }

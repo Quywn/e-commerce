@@ -21,32 +21,32 @@ public class CartController {
         return new ResponseEntity<>(cart, HttpStatus.OK);
     }
 
+//    @PostMapping
+//    public ResponseEntity<CartDTO> addCart(@RequestBody CartDTO cart) {
+//        CartDTO cartdto = cartService.addCart(cart);
+//        return new ResponseEntity<>(cartdto, HttpStatus.CREATED);
+//    }
+
+//    @DeleteMapping
+//    public ResponseEntity<CartDTO> removeCartByUser(@RequestBody String username) {
+//        CartDTO cartDTO = cartService.clearCartByUser(username);
+//        return new ResponseEntity<>(cartDTO, HttpStatus.OK);
+//    }
+//
+//    @DeleteMapping
+//    public ResponseEntity<CartDTO> removeProductFromCart(@RequestBody String productName) {
+//        CartDTO cartDTO = cartService.removeProductFromCart(productName);
+//        return new ResponseEntity<>(cartDTO, HttpStatus.OK);
+//    }
+
     @PostMapping
-    public ResponseEntity<CartDTO> addCart(@RequestBody CartDTO cart) {
-        CartDTO cartdto = cartService.addCart(cart);
-        return new ResponseEntity<>(cartdto, HttpStatus.CREATED);
-    }
-
-    @DeleteMapping
-    public ResponseEntity<CartDTO> removeCartByUser(@RequestBody String username) {
-        CartDTO cartDTO = cartService.removeCartByUser(username);
+    public ResponseEntity<CartDTO> addProductToCart(@RequestBody ProductDTO product, @RequestBody String username) {
+        CartDTO cartDTO = cartService.addProductToCart(product, username);
         return new ResponseEntity<>(cartDTO, HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<CartDTO> removeProductFromCart(@RequestBody String productName) {
-        CartDTO cartDTO = cartService.removeProductFromCart(productName);
-        return new ResponseEntity<>(cartDTO, HttpStatus.OK);
-    }
-
-    @PostMapping
-    public ResponseEntity<CartDTO> addProductToCart(@RequestBody ProductDTO product) {
-        CartDTO cartDTO = cartService.addProductToCart(product);
-        return new ResponseEntity<>(cartDTO, HttpStatus.OK);
-    }
-
-    @GetMapping
-    public Double calTotalPrice(String username) {
-        return cartService.calTotalPrice(username);
-    }
+//    @GetMapping
+//    public Double calTotalPrice(String username) {
+//        return cartService.calTotalPrice(username);
+//    }
 }

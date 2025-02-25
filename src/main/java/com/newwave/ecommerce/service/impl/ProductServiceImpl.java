@@ -34,16 +34,26 @@ public class ProductServiceImpl implements ProductService {
                 .price(product.getPrice())
                 .imageUrl(product.getImageUrl())
                 .build();
-        productRepo.save(productE);
-        return null;
+        Product p = productRepo.save(productE);
+
+        return ProductDTO.builder()
+                .productName(p.getProductName())
+                .quantity(p.getQuantity())
+                .price(p.getPrice())
+                .imageUrl(p.getImageUrl())
+                .build();
     }
 
     @Override
-    public ProductDTO removeProductByName(String productName) {
+    public String removeProductByName(String productName) {
         if (productRepo.findByProductName(productName) != null) {
             System.out.println("Product Not Found");
         }
-        productRepo.deleteProductByProductName(productName);
+        try {
+            productRepo.deleteProductByProductName(productName);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         return null;
     }
 

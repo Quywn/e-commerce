@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ProductController {
@@ -41,8 +42,12 @@ public class ProductController {
     }
 
     @DeleteMapping("/product")
-    public ResponseEntity<ProductDTO> removeProductByName(@RequestBody String productName) {
-        ProductDTO productDTO = productService.removeProductByName(productName);
-        return new ResponseEntity<>(productDTO, HttpStatus.OK);
+    public ResponseEntity<String> removeProductByName(@RequestBody String productName) {
+        try {
+            productService.removeProductByName(productName);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 }

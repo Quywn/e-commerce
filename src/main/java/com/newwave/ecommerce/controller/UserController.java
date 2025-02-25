@@ -20,14 +20,14 @@ public class UserController {
         return new ResponseEntity<>(userService.signUp(user), HttpStatus.OK);
     }
 
-    @PostMapping("/updateMail")
-    public ResponseEntity<UserDTO> updateMail(@RequestBody UserDTO user) {
-        return new ResponseEntity<>(userService.updateEmailByUsername(user), HttpStatus.OK);
-    }
-
-    @PostMapping("/updatePass")
-    public ResponseEntity<UserDTO> updatePass(@RequestBody UserDTO user) {
-        return new ResponseEntity<>(userService.updatePasswordByUsername(user), HttpStatus.OK);
-    }
+//    @PostMapping("/updateMail")
+//    public ResponseEntity<UserDTO> updateMail(@RequestBody UserDTO user) {
+//        return new ResponseEntity<>(userService.updateEmailByUsername(user), HttpStatus.OK);
+//    }
+//
+//    @PostMapping("/updatePass")
+//    public ResponseEntity<UserDTO> updatePass(@RequestBody UserDTO user) {
+//        return new ResponseEntity<>(userService.updatePasswordByUsername(user), HttpStatus.OK);
+//    }
 
 }
