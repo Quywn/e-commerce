@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDTO {
+public class ProductDTO implements Comparable<ProductDTO> {
     @NotNull
     private String productName;
     @NotNull
@@ -22,6 +22,10 @@ public class ProductDTO {
     @NotNull
     @Min(value = 0)
     private int quantity;
-
     private String imageUrl;
+
+    @Override
+    public int compareTo(ProductDTO o) {
+        return 0;
+    }
 }

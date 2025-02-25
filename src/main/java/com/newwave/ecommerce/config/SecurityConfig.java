@@ -32,8 +32,9 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login", "/signup").permitAll()
-                        .anyRequest().authenticated()
+                                .anyRequest().permitAll()
+//                        .requestMatchers("/login", "/signup").permitAll()
+//                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -47,7 +48,7 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().requestMatchers("/login");
+        return web -> web.ignoring().requestMatchers("/login", "/signup");
     }
 
     @Bean

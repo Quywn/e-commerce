@@ -6,6 +6,7 @@ import com.newwave.ecommerce.repository.ProductRepo;
 import com.newwave.ecommerce.service.ProductService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,13 +18,15 @@ public class ProductServiceImpl implements ProductService {
         this.productRepo = productRepo;
     }
 
-    public List<Product> getAllProducts() {
-        return productRepo.findAll();
+    public List<ProductDTO> getAllProducts() {
+         productRepo.findAll();
+         return null;
     }
     @Override
-    public void addProduct(ProductDTO product) {
+    public ProductDTO addProduct(ProductDTO product) {
         if (productRepo.findByProductName(product.getProductName()) != null) {
-            return;
+            System.out.println("Product exists");
+
         }
         Product productE = Product.builder()
                 .productName(product.getProductName())
@@ -32,19 +35,16 @@ public class ProductServiceImpl implements ProductService {
                 .imageUrl(product.getImageUrl())
                 .build();
         productRepo.save(productE);
+        return null;
     }
 
     @Override
-    public String removeProductByName(String productName) {
+    public ProductDTO removeProductByName(String productName) {
         if (productRepo.findByProductName(productName) != null) {
-            return "Product Not Found";
+            System.out.println("Product Not Found");
         }
-        try {
-            productRepo.delete(productRepo.findByProductName(productName));
-        } catch (Exception e) {
-            return "Lỗi: " + e.getMessage();
-        }
-        return "Success";
+        productRepo.deleteProductByProductName(productName);
+        return null;
     }
 
     @Override
@@ -61,9 +61,21 @@ public class ProductServiceImpl implements ProductService {
                 .build();
     }
 
+    @Override
+    public List<ProductDTO> getProductListA_Z() {
+        List<Product> productList = productRepo.findAll();
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        ProductDTO productDTO;
+        for (Product product : productList) {
+            productDTO = ProductDTO.builder()
+                    .productName(product.getProductName())
+                    .quantity(product.getQuantity())
+                    .price(product.getPrice())
+                    .imageUrl(product.getImageUrl())
+                    .build();
+            productDTOList.add(productDTO);
+        }
 
-//    @Override
-//    public List<Product> arrangeProductListA_Z(List<Product> productList) {
-//        return List.of();
-//    }
+        return productDTOList.stream().sorted().toList();
+    }
 }

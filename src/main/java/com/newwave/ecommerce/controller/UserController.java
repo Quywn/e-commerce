@@ -2,6 +2,8 @@ package com.newwave.ecommerce.controller;
 
 import com.newwave.ecommerce.domain.UserDTO;
 import com.newwave.ecommerce.service.impl.UserServiceImpl;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,12 +16,18 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String signUp(@RequestBody UserDTO user) {
-        try {
-            userService.signUp(user);
-        } catch (Exception e) {
-            return "Signup failed. Lỗi: "+ e.getMessage();
-        }
-        return "Signup successful";
+    public ResponseEntity<String> signUp(@RequestBody UserDTO user) {
+        return new ResponseEntity<>(userService.signUp(user), HttpStatus.OK);
     }
+
+    @PostMapping("/updateMail")
+    public ResponseEntity<UserDTO> updateMail(@RequestBody UserDTO user) {
+        return new ResponseEntity<>(userService.updateEmailByUsername(user), HttpStatus.OK);
+    }
+
+    @PostMapping("/updatePass")
+    public ResponseEntity<UserDTO> updatePass(@RequestBody UserDTO user) {
+        return new ResponseEntity<>(userService.updatePasswordByUsername(user), HttpStatus.OK);
+    }
+
 }

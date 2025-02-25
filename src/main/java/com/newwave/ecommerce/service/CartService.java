@@ -1,11 +1,14 @@
 package com.newwave.ecommerce.service;
 
-import com.newwave.ecommerce.entity.Product;
+import com.newwave.ecommerce.domain.CartDTO;
+import com.newwave.ecommerce.domain.ProductDTO;
 
 public interface CartService {
-    //user
-    boolean addProductToCart(Product product);
-    boolean removeProductFromCart(Product product);
-    Double calTotalPrice();
 
+    CartDTO addCart(CartDTO cart);
+    CartDTO removeCartByUser(String username);
+    CartDTO getCartByUser(String username);
+    CartDTO addProductToCart(ProductDTO product);
+    CartDTO removeProductFromCart(String productName);
+    Double calTotalPrice(String username);
 }
