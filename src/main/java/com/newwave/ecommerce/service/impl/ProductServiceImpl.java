@@ -2,8 +2,10 @@ package com.newwave.ecommerce.service.impl;
 
 import com.newwave.ecommerce.domain.ProductDTO;
 import com.newwave.ecommerce.entity.Product;
+import com.newwave.ecommerce.exception.NotFoundException;
 import com.newwave.ecommerce.repository.ProductRepo;
 import com.newwave.ecommerce.service.ProductService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepo productRepo;
@@ -23,42 +26,16 @@ public class ProductServiceImpl implements ProductService {
           productRepo.findAll();
         return null;
     }
-    @Override
-    public ProductDTO addProduct(ProductDTO product) {
-        if (productRepo.findByProductName(product.getProductName()).isPresent()) {
-            System.out.println("Product exists");
 
-        }
-        Product productE = Product.builder()
-                .productName(product.getProductName())
-                .quantity(product.getQuantity())
-                .price(product.getPrice())
-                .imageUrl(product.getImageUrl())
-                .build();
-        Product p = productRepo.save(productE);
-
-        return ProductDTO.builder()
-                .productName(p.getProductName())
-                .quantity(p.getQuantity())
-                .price(p.getPrice())
-                .imageUrl(p.getImageUrl())
-                .build();
-    }
-
-    @Override
-    public String removeProductByName(String productName) {
-        Optional<Product> product = productRepo.findByProductName(productName);
-
-        if (product.isPresent()) {
-            productRepo.delete(product.get());
-            return "Product removed: "+ product.get().getProductName();
-        }
-        return "Product not found";
-    }
 
     @Override
     public ProductDTO getProductByName(String name) {
         Optional<Product> product = productRepo.findByProductName(name);
+
+        if(product.isEmpty()) {
+            throw new NotFoundException("Product not found");
+        }
+
         return product.map(value -> ProductDTO.builder()
                 .productName(value.getProductName())
                 .quantity(value.getQuantity())

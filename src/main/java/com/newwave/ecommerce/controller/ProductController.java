@@ -35,14 +35,4 @@ public class ProductController {
         return new ResponseEntity<>(productDTO, HttpStatus.OK);
     }
 
-    @PostMapping("/product")
-    public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductDTO productDTO) {
-        ProductDTO productDTO1 = productService.addProduct(productDTO);
-        return new ResponseEntity<>(productDTO1, HttpStatus.CREATED);
-    }
-
-    @DeleteMapping("/product")
-    public ResponseEntity<String> removeProductByName(@RequestBody String productName) {
-        return new ResponseEntity<>( productService.removeProductByName(productName), HttpStatus.OK);
-    }
 }

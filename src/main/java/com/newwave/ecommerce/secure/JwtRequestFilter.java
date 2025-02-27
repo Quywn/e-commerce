@@ -1,5 +1,6 @@
 package com.newwave.ecommerce.secure;
 
+import com.newwave.ecommerce.exception.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -56,27 +56,37 @@
 			<scope>provided</scope>
 		</dependency>
 
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 
-
 		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-			<version>5.8.2</version>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+			<version>2.23.0</version>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-engine</artifactId>
-			<version>5.8.2</version>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-runner</artifactId>
+			<version>1.2.0</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.junit.vintage</groupId>
+			<artifactId>junit-vintage-engine</artifactId>
+			<version>5.2.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+		<groupId>org.mockito</groupId>
+		<artifactId>mockito-inline</artifactId>
+		<version>4.8.0</version> <!-- Replace with the latest version -->
+		<scope>test</scope>
+	</dependency>
+
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -89,8 +99,6 @@
 			<artifactId>nimbus-jose-jwt</artifactId>
 			<version>9.1</version>
 		</dependency>
-
-
 	</dependencies>
 
 	<build>
@@ -111,6 +119,40 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M5</version> <!-- Phiên bản mới của surefire -->
+				<configuration>
+					<dependenciesToScan>
+						<dependency>org.junit.jupiter</dependency>
+					</dependenciesToScan>
+<!--					<argLine>-->
+<!--						-javaagent:${settings.localRepository}/org/mockito/mockito-core/4.8.0/mockito-core-4.8.0.jar-->
+<!--					</argLine>-->
+<!--					<includes>-->
+<!--						<include>**/*Test.java</include>-->
+<!--					</includes>-->
+				</configuration>
+			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-surefire-plugin</artifactId>-->
+<!--				<version>2.19.1</version>-->
+<!--				<dependencies>-->
+<!--					<dependency>-->
+<!--						<groupId>org.junit.platform</groupId>-->
+<!--						<artifactId>junit-platform-surefire-provider</artifactId>-->
+<!--						<version>1.1.0</version>-->
+<!--					</dependency>-->
+<!--					<dependency>-->
+<!--						<groupId>org.junit.jupiter</groupId>-->
+<!--						<artifactId>junit-jupiter-engine</artifactId>-->
+<!--						<version>5.3.2</version>-->
+<!--					</dependency>-->
+<!--				</dependencies>-->
+<!--			</plugin>-->
+
 		</plugins>
 	</build>
 

@@ -3,59 +3,117 @@ package com.newwave.ecommerce.service.impl;
 import com.newwave.ecommerce.domain.CartDTO;
 import com.newwave.ecommerce.domain.ProductDTO;
 import com.newwave.ecommerce.entity.Cart;
+import com.newwave.ecommerce.entity.Product;
+import com.newwave.ecommerce.exception.NotFoundException;
 import com.newwave.ecommerce.repository.CartRepo;
+import com.newwave.ecommerce.repository.ProductRepo;
 import com.newwave.ecommerce.service.CartService;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class CartServiceImpl implements CartService {
     public final CartRepo cartRepo;
-    public CartServiceImpl(CartRepo cartRepo) {
-        this.cartRepo = cartRepo;
-    }
+    public final ProductRepo productRepo;
 
-//    @Override
-//    public CartDTO addCart(CartDTO cart) {
-//        return null;
-//    }
+    public CartServiceImpl(CartRepo cartRepo, ProductRepo productRepo) {
+        this.cartRepo = cartRepo;
+        this.productRepo = productRepo;
+    }
 
     @Override
     public CartDTO addProductToCart(ProductDTO product, String username) {
-        //todo
-        //check tồn tại giỏ hàng chưa, chưa thì tạo + thêm sp
-        Cart cart = Cart.builder().build();
-//        cartRepo.updateCart(cart);
-        return null;
+        if (productRepo.findByProductName(product.getProductName()).isEmpty()) {
+            throw new NotFoundException("Product not found");
+        }
+
+        if (cartRepo.findCartByUsername(username).isEmpty()) {
+            createCart(product, username);
+        }
+        Cart c = cartRepo.findCartByUsername(username).get();
+        Map<Product, Integer> orderProducts = c.getOrderProducts();
+        orderProducts.put(Product.builder()
+                        .productName(product.getProductName())
+                        .quantity(product.getQuantity())
+                        .imageUrl(product.getImageUrl())
+                        .price(product.getPrice())
+                        .build(), product.getQuantity());
+        c.setOrderProducts(orderProducts);
+        cartRepo.save(c);
+        return getCartByUser(username).get();
+    }
+
+    private void createCart(ProductDTO productDTO, String username) {
+        Cart cart = new Cart();
+        cart.setUsername(username);
+        Map<Product, Integer> orderProducts = new HashMap<>();
+        Product product = Product.builder()
+                .imageUrl(productDTO.getImageUrl())
+                .price(productDTO.getPrice())
+                .quantity(productDTO.getQuantity())
+                .productName(productDTO.getProductName())
+                .build();
+        orderProducts.put(product, product.getQuantity());
+        cart.setOrderProducts(orderProducts);
+        cartRepo.save(cart);
     }
 
 
     @Override
-    public CartDTO removeProductFromCart(String productName) {
-        //todo
-        Cart cart = Cart.builder().build();
-//        cartRepo.updateCart(cart);
-        return null;
+    public CartDTO removeProductFromCart(String productName, String username) {
+        //todo check sp có trong giỏ hảng k
+        Optional<Cart> cartOptional = cartRepo.findCartByUsername(username);
+        if (cartOptional.isEmpty()) {
+            throw new NotFoundException("Cart not found by username: " + username);
+        }
+        Map<Product, Integer> orderProducts = cartOptional.get().getOrderProducts();
+        orderProducts.forEach((product, value) -> {
+            if (product.getProductName().equals(productName)) {
+                orderProducts.remove(product);
+            }
+        });
+        Cart cart = Cart.builder()
+                .cartId(cartOptional.get().getCartId())
+                .username(username)
+                .orderProducts(orderProducts)
+                .build();
+
+        cartRepo.save(cart);
+
+        return getCartByUser(username).get();
     }
 
     @Override
-    public CartDTO getCartByUser(String username) {
-        Cart c = cartRepo.findCartByUsername(username);
-        CartDTO cartDTO = new CartDTO();
-        cartDTO.setCartId(c.getCartId());
-        cartDTO.setUsername(c.getUsername());
-        cartDTO.setOrderedProducts(c.getOrderProducts());
-        return cartDTO;
+    public Optional<CartDTO> getCartByUser(String username) {
+        if (cartRepo.findCartByUsername(username).isEmpty()) {
+            throw new NotFoundException("Cart not found by username: " + username);
+        } else {
+            Cart c = cartRepo.findCartByUsername(username).get();
+            CartDTO cartDTO = new CartDTO();
+            cartDTO.setCartId(c.getCartId());
+            cartDTO.setUsername(c.getUsername());
+            cartDTO.setOrderedProducts(c.getOrderProducts());
+            return Optional.of(cartDTO);
+        }
     }
 
     @Override
     public CartDTO clearCartByUser(String username) {
-        Cart c = cartRepo.deleteCartByUsername(username);
-        CartDTO cartDTO = new CartDTO();
-        cartDTO.setCartId(c.getCartId());
-        cartDTO.setUsername(c.getUsername());
-        cartDTO.setOrderedProducts(c.getOrderProducts());
-        return cartDTO;
+        Optional<Cart> cartOptional = cartRepo.findCartByUsername(username);
+        if (cartOptional.isEmpty()) {
+            throw new NotFoundException("Cart not found by username: " + username);
+        }
+        Cart c = new Cart();
+        c.setUsername(username);
+        c.setCartId(cartOptional.get().getCartId());
+        cartRepo.save(c);
+        return getCartByUser(username).get();
     }
+
+
 
 //    @Override
 //    public Double calTotalPrice(String username) {
