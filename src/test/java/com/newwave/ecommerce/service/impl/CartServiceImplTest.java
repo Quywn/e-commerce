@@ -44,16 +44,8 @@ public class CartServiceImplTest {
     }
 
     @Test
-    void addProductToCartTest() {
+    void addProductToCartTestHappyCase() {
 
     }
 
-    @Test
-    void clearCartByUserTest() {
-    }
-
-    @Test
-    void removeProductFromCart() {
-
-    }
 }
