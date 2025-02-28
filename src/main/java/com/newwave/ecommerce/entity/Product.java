@@ -29,10 +29,13 @@ public class Product implements Serializable {
     @Column(name = "price")
     private double price;
 
-    @NotNull
     @Min(value = 0)
-    @Column(name = "quantity")
-    private int quantity;
+    @Column(name = "quantityStock")
+    private int quantityStock;
+
+    @Min(value = 0)
+    @Column(name = "quantityOrdered")
+    private int quantityOrdered;
 
     @Column(name = "image_url")
     private String imageUrl;

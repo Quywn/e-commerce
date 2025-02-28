@@ -37,10 +37,11 @@ public class CartServiceImpl implements CartService {
         Map<Product, Integer> orderProducts = c.getOrderProducts();
         orderProducts.put(Product.builder()
                         .productName(product.getProductName())
-                        .quantity(product.getQuantity())
+                        .quantityOrdered(product.getQuantityOrdered())
+                        .quantityStock(product.getQuantityStock())
                         .imageUrl(product.getImageUrl())
                         .price(product.getPrice())
-                        .build(), product.getQuantity());
+                        .build(), product.getQuantityOrdered());
         c.setOrderProducts(orderProducts);
         cartRepo.save(c);
         return getCartByUser(username).get();
@@ -53,10 +54,11 @@ public class CartServiceImpl implements CartService {
         Product product = Product.builder()
                 .imageUrl(productDTO.getImageUrl())
                 .price(productDTO.getPrice())
-                .quantity(productDTO.getQuantity())
+                .quantityOrdered(productDTO.getQuantityOrdered())
+                .quantityStock(productDTO.getQuantityStock())
                 .productName(productDTO.getProductName())
                 .build();
-        orderProducts.put(product, product.getQuantity());
+        orderProducts.put(product, product.getQuantityOrdered());
         cart.setOrderProducts(orderProducts);
         cartRepo.save(cart);
     }

@@ -4,6 +4,7 @@ import com.newwave.ecommerce.domain.CartDTO;
 import com.newwave.ecommerce.domain.ProductDTO;
 import com.newwave.ecommerce.exception.NotFoundException;
 import com.newwave.ecommerce.service.impl.CartServiceImpl;
+import com.newwave.ecommerce.service.impl.ProductServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -19,9 +19,10 @@ public class ProductDTO implements Comparable<ProductDTO> {
     @NotNull
     @DecimalMin(value = "0.00")
     private double price;
-    @NotNull
     @Min(value = 0)
-    private int quantity;
+    private int quantityStock;
+    @Min(value = 0)
+    private int quantityOrdered;
     private String imageUrl;
 
     @Override

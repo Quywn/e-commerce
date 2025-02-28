@@ -17,7 +17,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return AuthorityUtils.createAuthorityList("ADMIN");
+        return AuthorityUtils.createAuthorityList("ADMIN", "CUSTOMER");
     }
 
     @Override

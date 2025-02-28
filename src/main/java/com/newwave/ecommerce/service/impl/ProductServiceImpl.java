@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
 
         return product.map(value -> ProductDTO.builder()
                 .productName(value.getProductName())
-                .quantity(value.getQuantity())
+                .quantityStock(value.getQuantityStock())
                 .price(value.getPrice())
                 .imageUrl(value.getImageUrl())
                 .build()).orElse(null);
@@ -53,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
         for (Product product : productList) {
             productDTO = ProductDTO.builder()
                     .productName(product.getProductName())
-                    .quantity(product.getQuantity())
+                    .quantityStock(product.getQuantityStock())
                     .price(product.getPrice())
                     .imageUrl(product.getImageUrl())
                     .build();
