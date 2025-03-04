@@ -23,30 +23,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public List<ProductDTO> getAllProducts() {
-          productRepo.findAll();
-        return null;
-    }
-
-
-    @Override
-    public ProductDTO getProductByName(String name) {
-        Optional<Product> product = productRepo.findByProductName(name);
-
-        if(product.isEmpty()) {
-            throw new NotFoundException("Product not found");
-        }
-
-        return product.map(value -> ProductDTO.builder()
-                .productName(value.getProductName())
-                .quantityStock(value.getQuantityStock())
-                .price(value.getPrice())
-                .imageUrl(value.getImageUrl())
-                .build()).orElse(null);
-
-    }
-
-    @Override
-    public List<ProductDTO> getProductListA_Z() {
         List<Product> productList = productRepo.findAll();
         List<ProductDTO> productDTOList = new ArrayList<>();
         ProductDTO productDTO;
@@ -59,7 +35,30 @@ public class ProductServiceImpl implements ProductService {
                     .build();
             productDTOList.add(productDTO);
         }
+        return productDTOList;
+    }
 
+
+    @Override
+    public ProductDTO getProductByName(String name) {
+        Optional<Product> product = productRepo.findByProductName(name);
+
+        if(product.isEmpty()) {
+            throw new NotFoundException("Product not found");
+        }
+
+        return ProductDTO.builder()
+                .productName(product.get().getProductName())
+                .quantityStock(product.get().getQuantityStock())
+                .price(product.get().getPrice())
+                .imageUrl(product.get().getImageUrl())
+                .build();
+
+    }
+
+    @Override
+    public List<ProductDTO> getProductListA_Z() {
+        List<ProductDTO> productDTOList = getAllProducts();
         return productDTOList.stream().sorted().toList();
     }
 }

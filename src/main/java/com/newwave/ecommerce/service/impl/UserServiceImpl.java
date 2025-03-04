@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    public String signUp(UserDTO userDTO) {
+    public String register(UserDTO userDTO) {
         if (userRepo.findByUsername(userDTO.getUsername()) != null || userRepo.findByEmail(userDTO.getEmail()) != null) {
             return "Username/email is already in use";
         }

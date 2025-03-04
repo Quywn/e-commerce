@@ -8,6 +8,7 @@ import com.newwave.ecommerce.service.UserService;
 import com.newwave.ecommerce.service.impl.UserServiceImpl;
 import com.nimbusds.jose.JOSEException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -61,5 +63,18 @@ public class AuthController {
         // Logic để hủy token
 
         return ResponseEntity.ok("Logged out successfully");
+    }
+
+    @GetMapping("/login")
+    public String login(HttpSession session) {
+        // Giả sử người dùng đã đăng nhập, ta lưu thông tin người dùng vào session
+        session.setAttribute("user", "admin");
+        return "Logged in successfully!";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.removeAttribute("user");
+        return "Logged out successfully!";
     }
 }

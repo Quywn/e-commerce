@@ -15,11 +15,10 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<String> signUp(@RequestBody UserDTO user) {
-        return new ResponseEntity<>(userService.signUp(user), HttpStatus.OK);
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody UserDTO user) {
+        return new ResponseEntity<>(userService.register(user), HttpStatus.OK);
     }
-
 //    @PostMapping("/updateMail")
 //    public ResponseEntity<UserDTO> updateMail(@RequestBody UserDTO user) {
 //        return new ResponseEntity<>(userService.updateEmailByUsername(user), HttpStatus.OK);
