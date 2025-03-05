@@ -63,17 +63,4 @@ public class AuthController {
 
         return ResponseEntity.ok("Logged out successfully");
     }
-
-    @GetMapping("/login")
-    public String login(HttpSession session) {
-        // Giả sử người dùng đã đăng nhập, ta lưu thông tin người dùng vào session
-        session.setAttribute("user", "admin");
-        return "Logged in successfully!";
-    }
-
-    @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.removeAttribute("user");
-        return "Logged out successfully!";
-    }
 }
