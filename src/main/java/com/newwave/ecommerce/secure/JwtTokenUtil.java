@@ -26,7 +26,6 @@ public class JwtTokenUtil implements Serializable {
 
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
-    // generate token for user
     public String generateToken(String username) throws JOSEException {
         JWSSigner signer = new MACSigner(JWT_SECRET);
 
@@ -36,13 +35,12 @@ public class JwtTokenUtil implements Serializable {
                 .expirationTime(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
                 .build();
 
-        SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS512), claimsSet);
+        SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
         signedJWT.sign(signer);
 
         return signedJWT.serialize();
     }
 
-    // validate token
     public Boolean validateToken(String token, UserDetails userDetails) throws JOSEException, ParseException {
         SignedJWT signedJWT = SignedJWT.parse(token);
         JWSVerifier verifier = new MACVerifier(JWT_SECRET);
@@ -56,15 +54,13 @@ public class JwtTokenUtil implements Serializable {
         return false;
     }
 
-    // lấy username từ token jwt
     public String getUsernameFromToken(String token) throws ParseException {
         SignedJWT signedJWT = SignedJWT.parse(token);
         return signedJWT.getJWTClaimsSet().getSubject();
     }
 
-//    // lấy expiration date từ token jwt
-//    public Date getExpirationDateFromToken(String token) throws ParseException {
-//        SignedJWT signedJWT = SignedJWT.parse(token);
-//        return signedJWT.getJWTClaimsSet().getExpirationTime();
-//    }
+    public Date getExpirationDateFromToken(String token) throws ParseException {
+        SignedJWT signedJWT = SignedJWT.parse(token);
+        return signedJWT.getJWTClaimsSet().getExpirationTime();
+    }
 }

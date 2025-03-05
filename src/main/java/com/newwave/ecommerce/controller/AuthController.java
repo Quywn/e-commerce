@@ -4,7 +4,6 @@ import com.newwave.ecommerce.domain.request.LoginRequest;
 import com.newwave.ecommerce.domain.response.JwtResponse;
 import com.newwave.ecommerce.exception.NotFoundException;
 import com.newwave.ecommerce.secure.JwtTokenUtil;
-import com.newwave.ecommerce.service.UserService;
 import com.newwave.ecommerce.service.impl.UserServiceImpl;
 import com.nimbusds.jose.JOSEException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,12 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthController {
     private final AuthenticationManager authenticationManager;
-    private final JwtTokenUtil jwtTokenProvider;
+    private final JwtTokenUtil jwtTokenUtil;
     private final UserServiceImpl userService;
 
-    public AuthController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenProvider, UserServiceImpl userService) {
+    public AuthController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, UserServiceImpl userService) {
         this.authenticationManager = authenticationManager;
-        this.jwtTokenProvider = jwtTokenProvider;
+        this.jwtTokenUtil = jwtTokenUtil;
         this.userService = userService;
     }
 
@@ -48,7 +47,7 @@ public class AuthController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             // Tạo JWT token
-            String token = jwtTokenProvider.generateToken(loginRequest.getUsername());
+            String token = jwtTokenUtil.generateToken(loginRequest.getUsername());
 
             return ResponseEntity.ok(new JwtResponse(token));
         } catch (AuthenticationException | JOSEException e) {
