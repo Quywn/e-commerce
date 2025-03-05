@@ -13,11 +13,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductDTO {
+    private String productCode;
     @NotNull
     private String productName;
     @NotNull
     @DecimalMin(value = "0.00")
     private double price;
+    private CategoryDTO category;
     @Min(value = 0)
     private int quantityStock;
     @Min(value = 0)

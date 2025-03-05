@@ -1,9 +1,11 @@
 package com.newwave.ecommerce.service.impl;
 
+import com.newwave.ecommerce.domain.CategoryDTO;
 import com.newwave.ecommerce.domain.ProductDTO;
+import com.newwave.ecommerce.entity.Category;
 import com.newwave.ecommerce.entity.Product;
-import com.newwave.ecommerce.entity.User;
 import com.newwave.ecommerce.exception.NotFoundException;
+import com.newwave.ecommerce.repository.CategoryRepo;
 import com.newwave.ecommerce.repository.ProductRepo;
 import com.newwave.ecommerce.service.ProductService;
 import jakarta.transaction.Transactional;
@@ -21,9 +23,13 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepo productRepo;
+    private final CategoryRepo categoryRepo;
+    private final CategoryServiceImpl categoryService;
 
-    public ProductServiceImpl(ProductRepo productRepo) {
+    public ProductServiceImpl(ProductRepo productRepo, CategoryRepo categoryRepo, CategoryServiceImpl categoryService) {
         this.productRepo = productRepo;
+        this.categoryRepo = categoryRepo;
+        this.categoryService = categoryService;
     }
 
     public List<ProductDTO> getAllProducts() {
@@ -32,6 +38,7 @@ public class ProductServiceImpl implements ProductService {
         ProductDTO productDTO;
         for (Product product : productList) {
             productDTO = ProductDTO.builder()
+                    .productCode(product.getProductCode())
                     .productName(product.getProductName())
                     .quantityStock(product.getQuantityStock())
                     .price(product.getPrice())
@@ -52,6 +59,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
         return ProductDTO.builder()
+                .productCode(product.get().getProductCode())
                 .productName(product.get().getProductName())
                 .quantityStock(product.get().getQuantityStock())
                 .price(product.get().getPrice())
@@ -77,6 +85,7 @@ public class ProductServiceImpl implements ProductService {
             productDTO.setQuantityStock(product.getQuantityStock());
             productDTO.setPrice(product.getPrice());
             productDTO.setImageUrl(product.getImageUrl());
+            productDTO.setProductCode(product.getProductCode());
             list.add(productDTO);
         });
         return list;
@@ -84,8 +93,8 @@ public class ProductServiceImpl implements ProductService {
 
     //admin
     @Override
-    public String removeProductByName(String productName, User admin) {
-        //todo: xác thực
+    public String removeProductByName(String productName) {
+        //todo: add author user role admin?
         Optional<Product> product = productRepo.findByProductName(productName);
 
         if(product.isEmpty()) {
@@ -101,9 +110,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDTO addProduct(ProductDTO product, User admin) {
-        //todo: xác thực
+    public ProductDTO addProduct(ProductDTO product) {
+        //todo: add author user role admin?
         Product productE = Product.builder()
+                .productCode(generateProductCode(product.getCategory()))
                 .productName(product.getProductName())
                 .quantityStock(product.getQuantityStock())
                 .price(product.getPrice())
@@ -112,6 +122,7 @@ public class ProductServiceImpl implements ProductService {
 
         Product p = productRepo.save(productE);
         return ProductDTO.builder()
+                .productCode(p.getProductCode())
                 .productName(p.getProductName())
                 .quantityStock(p.getQuantityStock())
                 .price(p.getPrice())
@@ -119,9 +130,29 @@ public class ProductServiceImpl implements ProductService {
                 .build();
     }
 
+    private String generateProductCode(CategoryDTO categoryDTO) {
+        Optional<Category> category = categoryRepo.findByCategoryName(categoryDTO.getCategoryName());
+        if (category.isEmpty()) {
+            categoryService.addCategory(categoryDTO);
+            category = categoryRepo.findByCategoryName(categoryDTO.getCategoryName());
+        }
+        long count = productRepo.countByCategory(category.get());
+        return category.get().getCategoryCode() + "_" + String.format("%06d", (int)(count + 1));
+    }
+
     @Override
-    public List<ProductDTO> getProductsByCategory(String categoryName, User admin) {
-        //todo
-        return List.of();
+    public List<ProductDTO> getProductsByCategory(String categoryName) {
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        List<Product> productList = productRepo.findByCategory_CategoryName(categoryName);
+        for (Product product : productList) {
+            productDTOList.add(ProductDTO.builder()
+                    .productCode(product.getProductCode())
+                    .productName(product.getProductName())
+                    .quantityStock(product.getQuantityStock())
+                    .price(product.getPrice())
+                    .imageUrl(product.getImageUrl())
+                    .build());
+        }
+        return productDTOList;
     }
 }

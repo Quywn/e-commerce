@@ -63,6 +63,7 @@ public class JwtTokenUtil implements Serializable {
         return signedJWT.getJWTClaimsSet().getSubject();
     }
 
+    //todo: check
     public Date getExpirationDateFromToken(String token) throws ParseException {
         SignedJWT signedJWT = SignedJWT.parse(token);
         return signedJWT.getJWTClaimsSet().getExpirationTime();

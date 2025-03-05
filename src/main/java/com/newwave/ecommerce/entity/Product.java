@@ -1,5 +1,6 @@
 package com.newwave.ecommerce.entity;
 
+import com.newwave.ecommerce.repository.ProductRepo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;

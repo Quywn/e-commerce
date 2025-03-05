@@ -1,7 +1,6 @@
 package com.newwave.ecommerce.controller;
 
 import com.newwave.ecommerce.domain.ProductDTO;
-import com.newwave.ecommerce.entity.Product;
 import com.newwave.ecommerce.service.impl.ProductServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,15 +42,21 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
-    //    @PostMapping("/product")
-//    public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductDTO productDTO) {
-//        ProductDTO productDTO1 = productService.addProduct(productDTO);
-//        return new ResponseEntity<>(productDTO1, HttpStatus.CREATED);
-//    }
-//
-//    @DeleteMapping("/product")
-//    public ResponseEntity<String> removeProductByName(@RequestParam String productName) {
-//        return new ResponseEntity<>( productService.removeProductByName(productName), HttpStatus.OK);
-//    }
+    @PostMapping("/product")
+    public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductDTO productDTO) {
+        ProductDTO productDTO1 = productService.addProduct(productDTO);
+        return new ResponseEntity<>(productDTO1, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/product")
+    public ResponseEntity<String> removeProductByName(@RequestParam String productName) {
+        return new ResponseEntity<>( productService.removeProductByName(productName), HttpStatus.OK);
+    }
+
+    @GetMapping("/product/category")
+    public ResponseEntity<List<ProductDTO>> getProductsByCategory(@RequestParam String categoryName) {
+        List<ProductDTO> products = productService.getProductsByCategory(categoryName);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
 
 }
