@@ -7,7 +7,6 @@ import com.newwave.ecommerce.secure.JwtTokenUtil;
 import com.newwave.ecommerce.service.impl.UserServiceImpl;
 import com.nimbusds.jose.JOSEException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,7 +15,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,18 +33,17 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        //todo: check xem có cần tạo service riêng hay không
         try {
             UserDetails userDetails = userService.loadUserByUsername(loginRequest.getUsername());
             if (!userService.checkPassword(loginRequest.getPassword(), userDetails.getPassword())) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
             }
-            // Xác thực thông tin đăng nhập
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            // Tạo JWT token
             String token = jwtTokenUtil.generateToken(loginRequest.getUsername());
 
             return ResponseEntity.ok(new JwtResponse(token));
@@ -59,7 +56,7 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request) {
-        // Logic để hủy token
+        //todo: Logic để hủy token
 
         return ResponseEntity.ok("Logged out successfully");
     }

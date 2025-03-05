@@ -8,6 +8,8 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -16,23 +18,25 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.util.Date;
 
-import static com.newwave.ecommerce.domain.Constant.JWT_SECRET;
 
 @Component
+@ConfigurationProperties(prefix = "jwt")
 public class JwtTokenUtil implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
-
-    public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+    @Value("${jwt.secret}")
+    private String secretKey;
+    @Value("${jwt.expiration}")
+    private String expiration;
 
     public String generateToken(String username) throws JOSEException {
-        JWSSigner signer = new MACSigner(JWT_SECRET);
+        JWSSigner signer = new MACSigner(secretKey);
 
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
                 .subject(username)
                 .issueTime(new Date())
-                .expirationTime(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+                .expirationTime(new Date(System.currentTimeMillis() + expiration))
                 .build();
 
         SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
@@ -43,7 +47,7 @@ public class JwtTokenUtil implements Serializable {
 
     public Boolean validateToken(String token, UserDetails userDetails) throws JOSEException, ParseException {
         SignedJWT signedJWT = SignedJWT.parse(token);
-        JWSVerifier verifier = new MACVerifier(JWT_SECRET);
+        JWSVerifier verifier = new MACVerifier(secretKey);
 
         if (signedJWT.verify(verifier)) {
             String username = signedJWT.getJWTClaimsSet().getSubject();

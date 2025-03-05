@@ -89,6 +89,12 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    public CartDTO getCartHistoryByUsername(String username) {
+        //todo
+        return null;
+    }
+
+    @Override
     public Optional<CartDTO> getCartByUser(String username) {
         if (cartRepo.findCartByUsername(username).isEmpty()) {
             throw new NotFoundException("Cart not found by username: " + username);
@@ -115,10 +121,4 @@ public class CartServiceImpl implements CartService {
         return getCartByUser(username).get();
     }
 
-
-
-//    @Override
-//    public Double calTotalPrice(String username) {
-//        return 0.0;
-//    }
 }

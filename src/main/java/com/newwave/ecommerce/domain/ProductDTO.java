@@ -2,7 +2,6 @@ package com.newwave.ecommerce.domain;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDTO implements Comparable<ProductDTO> {
+public class ProductDTO {
     @NotNull
     private String productName;
     @NotNull
@@ -25,8 +24,5 @@ public class ProductDTO implements Comparable<ProductDTO> {
     private int quantityOrdered;
     private String imageUrl;
 
-    @Override
-    public int compareTo(ProductDTO o) {
-        return 0;
-    }
+
 }

@@ -29,7 +29,7 @@ public class Cart implements Serializable {
 
     @ElementCollection
     @CollectionTable(name = "cart_product_quantities", joinColumns = @JoinColumn(name = "cart_id"))
-    @MapKeyJoinColumn(name = "product_name")
+    @MapKeyJoinColumn(name = "product_name")//todo check có cần đổi thành id ko
     @Column(name = "order_products")
     private Map<Product, Integer> orderProducts = new HashMap<>();
 }

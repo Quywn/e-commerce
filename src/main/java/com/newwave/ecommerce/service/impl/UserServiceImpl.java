@@ -28,7 +28,6 @@ public class UserServiceImpl implements UserService {
         return new UserPrincipal(user);
     }
 
-    // Kiểm tra mật khẩu người dùng có hợp lệ không
     public boolean checkPassword(String rawPassword, String encodedPassword) {
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
@@ -46,15 +45,19 @@ public class UserServiceImpl implements UserService {
         return "Success saved user +" + userRepo.save(user);
     }
 
-//    @Override
-//    public UserDTO updateEmailByUsername(UserDTO user) {
-//        userRepo.updateEmailByUsername(user.getUsername());
-//        return null;
-//    }
-//
-//    @Override
-//    public UserDTO updatePasswordByUsername(UserDTO user) {
-//        userRepo.updatePasswordByUsername(user.getUsername());
-//        return null;
-//    }
+    @Override
+    public UserDTO getUser(String username) {
+        return null;
+    }
+
+    @Override
+    public UserDTO updateUser(UserDTO userDTO) {
+        return null;
+    }
+
+    @Override
+    public UserDTO deleteUser(String username, String password) {
+        return null;
+    }
+
 }

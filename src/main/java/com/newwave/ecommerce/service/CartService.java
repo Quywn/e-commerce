@@ -11,4 +11,5 @@ public interface CartService {
     Optional<CartDTO> getCartByUser(String username);
     CartDTO addProductToCart(ProductDTO product, String username);
     CartDTO removeProductFromCart(String productName, String username);
+    CartDTO getCartHistoryByUsername(String username);
 }

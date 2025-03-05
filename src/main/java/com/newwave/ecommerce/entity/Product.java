@@ -20,10 +20,18 @@ import java.io.Serializable;
 public class Product implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "product_code", nullable = false)
+    private String productCode;
     @Column(name = "product_name", nullable = false)
     private String productName;
+
+    @ManyToOne
+    @JoinColumn(name = "category_name")
+    private Category category;
 
     @DecimalMin(value = "0.00")
     @Column(name = "price")
