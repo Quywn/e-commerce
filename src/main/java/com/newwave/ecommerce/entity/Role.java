@@ -17,8 +17,7 @@ public class Role {
     @Column(name = "role_name")
     private String roleName;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private Set<User> users = new HashSet<>();
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
 
 }

@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,19 +34,28 @@ public class UserServiceImpl implements UserService {
         if (userRepo.findByUsername(userDTO.getUsername()).isPresent() || userRepo.findByEmail(userDTO.getEmail()) != null) {
             return "Username/email is already in use";
         }
-        Optional<Role> role = roleRepo.findByRoleName(userDTO.getRole().getRoleName());
-
-        if (role.isEmpty()) {
-            throw new NotFoundException("Role not found!");
+        List<Role> rolesEntity = new ArrayList<>();
+        for (Role role : userDTO.getRoles()) {
+            Optional<Role> roleEntity = roleRepo.findRoleByRoleName(role.getRoleName());
+            if (roleEntity.isEmpty()) {
+                throw new NotFoundException("Role with name " + role.getRoleName() + " not exists");
+            } else {
+                rolesEntity.add(roleEntity.get());
+            }
         }
 
         User user = User.builder()
                 .username(userDTO.getUsername())
                 .email(userDTO.getEmail())
                 .password(passwordEncoder.encode(userDTO.getPassword()))
-                .role(userDTO.getRole())
+                .roles(rolesEntity)
                 .build();
-        return "Success saved user: " + userRepo.save(user).getUsername();
+        try {
+            userRepo.save(user);
+        } catch (Exception e) {
+            return "Save failed. " + e.getMessage();
+        }
+        return "Success saved user: " + userDTO.getUsername();
     }
 
     @Override

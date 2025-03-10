@@ -8,6 +8,7 @@ import lombok.Data;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -19,5 +20,5 @@ public class UserDTO implements Serializable {
     @NotNull
     private String email;
     private String password;
-    private Role role;
+    private List<Role> roles;
 }
