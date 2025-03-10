@@ -1,5 +1,6 @@
 package com.newwave.ecommerce.service.impl;
 
+import com.newwave.ecommerce.domain.RoleDTO;
 import com.newwave.ecommerce.domain.UserDTO;
 import com.newwave.ecommerce.entity.Role;
 import com.newwave.ecommerce.entity.User;
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService {
             return "Username/email is already in use";
         }
         List<Role> rolesEntity = new ArrayList<>();
-        for (Role role : userDTO.getRoles()) {
+        for (RoleDTO role : userDTO.getRoles()) {
             Optional<Role> roleEntity = roleRepo.findRoleByRoleName(role.getRoleName());
             if (roleEntity.isEmpty()) {
                 throw new NotFoundException("Role with name " + role.getRoleName() + " not exists");
