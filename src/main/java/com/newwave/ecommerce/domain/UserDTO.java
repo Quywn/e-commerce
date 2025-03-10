@@ -1,5 +1,6 @@
 package com.newwave.ecommerce.domain;
 
+import com.newwave.ecommerce.entity.Role;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +18,6 @@ public class UserDTO implements Serializable {
     private String username;
     @NotNull
     private String email;
-    @NotNull
     private String password;
-    private List<String> permissions;
+    private Role role;
 }

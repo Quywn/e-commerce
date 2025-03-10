@@ -1,14 +1,18 @@
 package com.newwave.ecommerce.secure;
 
 import com.newwave.ecommerce.exception.ExpiredJwtException;
+import com.newwave.ecommerce.service.impl.AuthServiceImpl;
+import com.newwave.ecommerce.service.impl.UserServiceImpl;
 import com.nimbusds.jose.JOSEException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -19,13 +23,13 @@ import java.text.ParseException;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    private final JwtUserDetailsService jwtUserDetailsService;
-
     private final JwtTokenUtil jwtTokenUtil;
 
-    public JwtRequestFilter(JwtUserDetailsService jwtUserDetailsService, JwtTokenUtil jwtTokenUtil) {
-        this.jwtUserDetailsService = jwtUserDetailsService;
+    private final AuthServiceImpl authService;
+
+    public JwtRequestFilter(JwtTokenUtil jwtTokenUtil, AuthServiceImpl authService) {
         this.jwtTokenUtil = jwtTokenUtil;
+        this.authService = authService;
     }
 
     @Override
@@ -49,8 +53,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
         }
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null)  {
+            UserDetails userDetails = this.authService.loadUserByUsername(username);
 
             try {
                 if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {

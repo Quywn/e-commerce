@@ -1,0 +1,10 @@
+{
+  "username": "quyenvtn",
+  "email": "quyenvtn",
+  "password": "password",
+  "roles": [
+    {
+      "roleName": "USER"
+    }
+  ]
+}

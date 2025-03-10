@@ -3,6 +3,7 @@ package com.newwave.ecommerce.secure;
 
 
 
+import com.newwave.ecommerce.common.Utils;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
@@ -10,6 +11,7 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +19,8 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -30,13 +34,18 @@ public class JwtTokenUtil implements Serializable {
     @Value("${jwt.expiration}")
     private String expiration;
 
-    public String generateToken(String username) throws JOSEException {
+    private final Utils utils = new Utils();
+
+    public String generateToken(UserDetails userDetails) throws JOSEException {
         JWSSigner signer = new MACSigner(secretKey);
 
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
-                .subject(username)
+                .subject(userDetails.getUsername())
                 .issueTime(new Date())
-                .expirationTime(new Date(System.currentTimeMillis() + expiration))
+                .expirationTime(utils.getDatePlusPeriodMs(expiration))
+                .claim("authorities", userDetails.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList()))
                 .build();
 
         SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
@@ -63,7 +72,15 @@ public class JwtTokenUtil implements Serializable {
         return signedJWT.getJWTClaimsSet().getSubject();
     }
 
-    //todo: check
+    //todo: get roles from user
+    public List<String> getRolesFromToken(String token) throws ParseException {
+            SignedJWT jwt = SignedJWT.parse(token);
+            JWTClaimsSet claims = jwt.getJWTClaimsSet();
+            return (List<String>) claims.getClaim("authorities");
+
+    }
+
+    //todo: check need?
     public Date getExpirationDateFromToken(String token) throws ParseException {
         SignedJWT signedJWT = SignedJWT.parse(token);
         return signedJWT.getJWTClaimsSet().getExpirationTime();

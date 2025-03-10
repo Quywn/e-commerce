@@ -34,7 +34,7 @@ public class ProductController {
         return new ResponseEntity<>(productDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/products")
+    @GetMapping("/products/page")
     public ResponseEntity<List<ProductDTO>> getProductsPage(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int pageSize) {
@@ -42,13 +42,13 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
-    @PostMapping("/product")
+    @PostMapping("/admin/product")
     public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductDTO productDTO) {
         ProductDTO productDTO1 = productService.addProduct(productDTO);
         return new ResponseEntity<>(productDTO1, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/product")
+    @DeleteMapping("/admin/product")
     public ResponseEntity<String> removeProductByName(@RequestParam String productName) {
         return new ResponseEntity<>( productService.removeProductByName(productName), HttpStatus.OK);
     }

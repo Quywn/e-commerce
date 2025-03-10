@@ -1,0 +1,8 @@
+{
+  "productName": "Hamburger",
+  "price": 2.0,
+  "category": {
+    "categoryName": "Food"
+  },
+  "quantityStock": 3
+}

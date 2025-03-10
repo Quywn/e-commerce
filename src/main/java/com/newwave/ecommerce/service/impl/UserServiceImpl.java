@@ -1,11 +1,12 @@
 package com.newwave.ecommerce.service.impl;
 
 import com.newwave.ecommerce.domain.UserDTO;
+import com.newwave.ecommerce.entity.Role;
 import com.newwave.ecommerce.entity.User;
+import com.newwave.ecommerce.exception.NotFoundException;
+import com.newwave.ecommerce.repository.RoleRepo;
 import com.newwave.ecommerce.repository.UserRepo;
-import com.newwave.ecommerce.secure.UserPrincipal;
 import com.newwave.ecommerce.service.UserService;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,18 +17,12 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepo roleRepo;
 
-    public UserServiceImpl(UserRepo userRepo, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepo userRepo, PasswordEncoder passwordEncoder, RoleRepo roleRepo) {
         this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
-    }
-
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepo.findByUsername(username);
-        if (user.isEmpty()) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        return new UserPrincipal(user.get());
+        this.roleRepo = roleRepo;
     }
 
     public boolean checkPassword(String rawPassword, String encodedPassword) {
@@ -39,12 +34,19 @@ public class UserServiceImpl implements UserService {
         if (userRepo.findByUsername(userDTO.getUsername()).isPresent() || userRepo.findByEmail(userDTO.getEmail()) != null) {
             return "Username/email is already in use";
         }
+        Optional<Role> role = roleRepo.findByRoleName(userDTO.getRole().getRoleName());
+
+        if (role.isEmpty()) {
+            throw new NotFoundException("Role not found!");
+        }
+
         User user = User.builder()
                 .username(userDTO.getUsername())
                 .email(userDTO.getEmail())
                 .password(passwordEncoder.encode(userDTO.getPassword()))
+                .role(userDTO.getRole())
                 .build();
-        return "Success saved user +" + userRepo.save(user);
+        return "Success saved user: " + userRepo.save(user).getUsername();
     }
 
     @Override

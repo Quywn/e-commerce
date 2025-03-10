@@ -66,7 +66,6 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartDTO removeProductFromCart(String productName, String username) {
-        //todo check sp có trong giỏ hảng k
         Optional<Cart> cartOptional = cartRepo.findCartByUsername(username);
         if (cartOptional.isEmpty()) {
             throw new NotFoundException("Cart not found by username: " + username);

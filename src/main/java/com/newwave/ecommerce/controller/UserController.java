@@ -18,7 +18,7 @@ public class UserController {
         return new ResponseEntity<>(userService.register(user), HttpStatus.OK);
     }
 
-    @GetMapping("/profile")
+    @GetMapping("/user/profile")
     public ResponseEntity<UserDTO> getProfile(String username) {
         return new ResponseEntity<>(userService.getUser(username), HttpStatus.OK);
     }

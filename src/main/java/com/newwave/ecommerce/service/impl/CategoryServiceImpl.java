@@ -62,6 +62,5 @@ public class CategoryServiceImpl implements CategoryService {
         }
         categoryRepo.delete(category.get());
         return "Delete completed: "+ categoryName;
-
     }
 }

@@ -17,7 +17,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @PostMapping("/category")
+    @PostMapping("/admin/category")
     public ResponseEntity<String> addCategory(@RequestBody CategoryDTO categoryDTO) {
         return new ResponseEntity<>(categoryService.addCategory(categoryDTO), HttpStatus.CREATED);
     }
@@ -32,7 +32,7 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.getCategory(categoryName), HttpStatus.OK);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/admin/category")
     public ResponseEntity<String> deleteCategory(String categoryName) {
         return new ResponseEntity<>(categoryService.deleteCategory(categoryName), HttpStatus.OK);
     }

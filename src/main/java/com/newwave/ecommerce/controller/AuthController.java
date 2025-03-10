@@ -4,6 +4,7 @@ import com.newwave.ecommerce.domain.request.LoginRequest;
 import com.newwave.ecommerce.domain.response.JwtResponse;
 import com.newwave.ecommerce.exception.NotFoundException;
 import com.newwave.ecommerce.secure.JwtTokenUtil;
+import com.newwave.ecommerce.service.impl.AuthServiceImpl;
 import com.newwave.ecommerce.service.impl.UserServiceImpl;
 import com.nimbusds.jose.JOSEException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,18 +25,19 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
     private final UserServiceImpl userService;
+    private final AuthServiceImpl authService;
 
-    public AuthController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, UserServiceImpl userService) {
+    public AuthController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, UserServiceImpl userService, AuthServiceImpl authService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenUtil = jwtTokenUtil;
         this.userService = userService;
+        this.authService = authService;
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        //todo: check xem có cần tạo service riêng hay không
         try {
-            UserDetails userDetails = userService.loadUserByUsername(loginRequest.getUsername());
+            UserDetails userDetails = authService.loadUserByUsername(loginRequest.getUsername());
             if (!userService.checkPassword(loginRequest.getPassword(), userDetails.getPassword())) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
             }
@@ -44,7 +46,7 @@ public class AuthController {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            String token = jwtTokenUtil.generateToken(loginRequest.getUsername());
+            String token = jwtTokenUtil.generateToken(userDetails);
 
             return ResponseEntity.ok(new JwtResponse(token));
         } catch (AuthenticationException | JOSEException e) {

@@ -30,7 +30,7 @@ public class Product implements Serializable {
     @Column(name = "product_name", nullable = false)
     private String productName;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_name")
     private Category category;
 

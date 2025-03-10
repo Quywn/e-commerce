@@ -91,10 +91,8 @@ public class ProductServiceImpl implements ProductService {
         return list;
     }
 
-    //admin
     @Override
     public String removeProductByName(String productName) {
-        //todo: add author user role admin?
         Optional<Product> product = productRepo.findByProductName(productName);
 
         if(product.isEmpty()) {
@@ -111,7 +109,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO addProduct(ProductDTO product) {
-        //todo: add author user role admin?
         Product productE = Product.builder()
                 .productCode(generateProductCode(product.getCategory()))
                 .productName(product.getProductName())
