@@ -32,7 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
     private String generateCategoryCode() {
         long count = categoryRepo.count();
-        return String.format("%04d", (int)(count + 1));  // 4 ký tự mã Category
+        return String.format("%04d", (int)(count + 1));
     }
 
     @Override

@@ -28,6 +28,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartDTO addProductToCart(ProductDTO product, String username) {
+        //todo: bonus logic check quantityStock
         if (productRepo.findByProductName(product.getProductName()).isEmpty()) {
             throw new NotFoundException("Product not found");
         }
