@@ -140,9 +140,9 @@ public class ProductServiceImpl implements ProductService {
                     .imageUrl(product.getImageUrl())
                     .build());
         }
+
         return productDTOList;
     }
-
     //format: {product_code}_xxxxxx | xxxxxx : [000001 - 999999]
     private String generateProductCode(CategoryDTO categoryDTO) {
         Optional<Category> category = categoryRepo.findByCategoryName(categoryDTO.getCategoryName());

@@ -4,5 +4,5 @@ import org.springframework.core.Ordered;
 import java.util.List;
 
 public interface OrderService {
-    List<Ordered> getOrderedByUsername(String username);
+//    List<Ordered> getOrderedByUsername(String username);
 }

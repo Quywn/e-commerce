@@ -58,8 +58,7 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request) {
-        //todo: Logic để hủy token
-
+        //todo: add BlackList
         return ResponseEntity.ok("Logged out successfully");
     }
 }
