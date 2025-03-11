@@ -1,7 +1,6 @@
 package com.newwave.ecommerce.service.impl;
 
 import com.newwave.ecommerce.domain.CartDTO;
-import com.newwave.ecommerce.entity.Product;
 import com.newwave.ecommerce.exception.NotFoundException;
 import com.newwave.ecommerce.repository.CartRepo;
 import com.newwave.ecommerce.repository.ProductRepo;
@@ -11,9 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;

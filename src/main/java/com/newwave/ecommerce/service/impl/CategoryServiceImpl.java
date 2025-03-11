@@ -6,7 +6,6 @@ import com.newwave.ecommerce.exception.NotFoundException;
 import com.newwave.ecommerce.repository.CategoryRepo;
 import com.newwave.ecommerce.service.CategoryService;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,10 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
         newCategoryDTO.setCategoryCode(category.getCategoryCode());
         return newCategoryDTO;
     }
-    private String generateCategoryCode() {
-        long count = categoryRepo.count();
-        return String.format("%04d", (int)(count + 1));
-    }
+
 
     @Override
     public CategoryDTO getCategory(String categoryName) {
@@ -66,5 +62,11 @@ public class CategoryServiceImpl implements CategoryService {
         }
         categoryRepo.delete(category.get());
         return "Delete completed: "+ categoryName;
+    }
+
+    //format: xxxx [0001 - 9999]
+    private String generateCategoryCode() {
+        long count = categoryRepo.count();
+        return String.format("%04d", (int)(count + 1));
     }
 }

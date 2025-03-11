@@ -5,7 +5,6 @@ import com.newwave.ecommerce.domain.CategoryDTO;
 import com.newwave.ecommerce.domain.ProductDTO;
 import com.newwave.ecommerce.entity.Cart;
 import com.newwave.ecommerce.entity.Product;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;

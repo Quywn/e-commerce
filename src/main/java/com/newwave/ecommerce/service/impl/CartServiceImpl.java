@@ -9,12 +9,9 @@ import com.newwave.ecommerce.repository.CartRepo;
 import com.newwave.ecommerce.repository.ProductRepo;
 import com.newwave.ecommerce.service.CartService;
 import org.springframework.stereotype.Service;
-
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -48,22 +45,6 @@ public class CartServiceImpl implements CartService {
         c.setOrderProducts(orderProducts);
         cartRepo.save(c);
         return getCartByUser(username).get();
-    }
-
-    private void createCart(ProductDTO productDTO, String username) {
-        Cart cart = new Cart();
-        cart.setUsername(username);
-        Map<Product, Integer> orderProducts = new HashMap<>();
-        Product product = Product.builder()
-                .imageUrl(productDTO.getImageUrl())
-                .price(productDTO.getPrice())
-                .quantityOrdered(productDTO.getQuantityOrdered())
-                .quantityStock(productDTO.getQuantityStock())
-                .productName(productDTO.getProductName())
-                .build();
-        orderProducts.put(product, product.getQuantityOrdered());
-        cart.setOrderProducts(orderProducts);
-        cartRepo.save(cart);
     }
 
 
@@ -130,5 +111,20 @@ public class CartServiceImpl implements CartService {
         return getCartByUser(username).get();
     }
 
+    private void createCart(ProductDTO productDTO, String username) {
+        Cart cart = new Cart();
+        cart.setUsername(username);
+        Map<Product, Integer> orderProducts = new HashMap<>();
+        Product product = Product.builder()
+                .imageUrl(productDTO.getImageUrl())
+                .price(productDTO.getPrice())
+                .quantityOrdered(productDTO.getQuantityOrdered())
+                .quantityStock(productDTO.getQuantityStock())
+                .productName(productDTO.getProductName())
+                .build();
+        orderProducts.put(product, product.getQuantityOrdered());
+        cart.setOrderProducts(orderProducts);
+        cartRepo.save(cart);
+    }
 
 }

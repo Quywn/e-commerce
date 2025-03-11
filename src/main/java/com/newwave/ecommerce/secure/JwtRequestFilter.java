@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import java.io.IOException;
 import java.text.ParseException;
 
@@ -21,7 +20,6 @@ import java.text.ParseException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final JwtTokenUtil jwtTokenUtil;
-
     private final AuthServiceImpl authService;
 
     public JwtRequestFilter(JwtTokenUtil jwtTokenUtil, AuthServiceImpl authService) {

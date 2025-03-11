@@ -7,7 +7,7 @@ public class Utils {
     public Date getDatePlusPeriodMs(String period) {
         Instant now = Instant.now();
         Instant futureTime = now.plusMillis(Long.parseLong(period)); // 500ms
-       return Date.from(futureTime);
+        return Date.from(futureTime);
     }
 
     public Date getToday() {

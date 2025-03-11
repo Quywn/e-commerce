@@ -13,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -127,17 +126,6 @@ public class ProductServiceImpl implements ProductService {
                 .build();
     }
 
-    private String generateProductCode(CategoryDTO categoryDTO) {
-        Optional<Category> category = categoryRepo.findByCategoryName(categoryDTO.getCategoryName());
-        long count;
-        if (category.isEmpty()) {
-            CategoryDTO newCategory = categoryService.addCategory(categoryDTO);
-            count = 0;
-            return newCategory.getCategoryCode() + "_" + String.format("%06d", (int)(count + 1));
-        }
-        count = productRepo.countByCategory(category.get());
-        return category.get().getCategoryCode() + "_" + String.format("%06d", (int)(count + 1));
-    }
 
     @Override
     public List<ProductDTO> getProductsByCategory(String categoryName) {
@@ -153,5 +141,18 @@ public class ProductServiceImpl implements ProductService {
                     .build());
         }
         return productDTOList;
+    }
+
+    //format: {product_code}_xxxxxx | xxxxxx : [000001 - 999999]
+    private String generateProductCode(CategoryDTO categoryDTO) {
+        Optional<Category> category = categoryRepo.findByCategoryName(categoryDTO.getCategoryName());
+        long count;
+        if (category.isEmpty()) {
+            CategoryDTO newCategory = categoryService.addCategory(categoryDTO);
+            count = 0;
+            return newCategory.getCategoryCode() + "_" + String.format("%06d", (int)(count + 1));
+        }
+        count = productRepo.countByCategory(category.get());
+        return category.get().getCategoryCode() + "_" + String.format("%06d", (int)(count + 1));
     }
 }

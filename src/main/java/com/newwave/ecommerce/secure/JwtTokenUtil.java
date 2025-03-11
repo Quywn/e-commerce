@@ -1,8 +1,5 @@
 package com.newwave.ecommerce.secure;
 
-
-
-
 import com.newwave.ecommerce.common.Utils;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
@@ -14,7 +11,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.text.ParseException;

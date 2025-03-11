@@ -3,7 +3,6 @@ package com.newwave.ecommerce.service;
 import com.newwave.ecommerce.domain.CartDTO;
 import com.newwave.ecommerce.domain.ProductDTO;
 import com.newwave.ecommerce.entity.Cart;
-
 import java.util.Optional;
 
 public interface CartService {
