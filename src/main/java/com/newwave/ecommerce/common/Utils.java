@@ -9,4 +9,8 @@ public class Utils {
         Instant futureTime = now.plusMillis(500); // 500ms
        return Date.from(futureTime);
     }
+
+    public Date getToday() {
+        return Date.from(Instant.now());
+    }
 }

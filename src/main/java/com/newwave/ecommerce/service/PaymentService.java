@@ -5,5 +5,5 @@ import com.newwave.ecommerce.domain.request.PaymentRequest;
 import javax.smartcardio.Card;
 
 public interface PaymentService {
-    boolean processPayment(Card card, PaymentRequest paymentRequest);
+    boolean processPayment(PaymentRequest paymentRequest);
 }

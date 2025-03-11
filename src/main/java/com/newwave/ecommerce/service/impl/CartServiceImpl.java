@@ -11,8 +11,10 @@ import com.newwave.ecommerce.service.CartService;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -88,6 +90,19 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    public Double getCartTotal(Cart cart) {
+        Double cartTotal = 0.0;
+        Map<Product, Integer> productsOrderList = cart.getOrderProducts();
+        for (Map.Entry<Product, Integer> entry : productsOrderList.entrySet()) {
+            Product product = entry.getKey();
+            Integer quantityOrdered = entry.getValue();
+            cartTotal += product.getQuantityOrdered() * quantityOrdered;
+        }
+        return cartTotal;
+
+    }
+
+    @Override
     public Optional<CartDTO> getCartByUser(String username) {
         if (cartRepo.findCartByUsername(username).isEmpty()) {
             throw new NotFoundException("Cart not found by username: " + username);
@@ -113,5 +128,6 @@ public class CartServiceImpl implements CartService {
         cartRepo.save(c);
         return getCartByUser(username).get();
     }
+
 
 }

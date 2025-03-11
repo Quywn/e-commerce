@@ -1,5 +1,8 @@
 package com.newwave.ecommerce.domain.request;
 
+import lombok.Data;
+
+@Data
 public class PaymentRequest {
     private String username;
     private String paymentMethod;
