@@ -1,10 +1,10 @@
 package com.newwave.ecommerce.utils;
 
 import com.newwave.ecommerce.domain.CartDTO;
+import com.newwave.ecommerce.domain.CategoryDTO;
 import com.newwave.ecommerce.domain.ProductDTO;
 import com.newwave.ecommerce.entity.Cart;
 import com.newwave.ecommerce.entity.Product;
-import jakarta.persistence.criteria.CriteriaBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,9 +41,12 @@ public class BuildObjectUtils {
     }
 
     public ProductDTO buildProductDTO() {
+        CategoryDTO categoryDTO = new CategoryDTO();
+        categoryDTO.setCategoryName("categoryNameTest");
         ProductDTO product = new ProductDTO();
         product.setProductName("productNameTest");
         product.setPrice(1.0);
+        product.setCategory(categoryDTO);
         product.setQuantityStock(100);
         product.setQuantityOrdered(1);
         product.setImageUrl("imageUrlTest");
@@ -61,4 +64,10 @@ public class BuildObjectUtils {
         return Optional.of(product);
     }
 
+
+    public CategoryDTO buildCategoryDTO() {
+        CategoryDTO categoryDTO = new CategoryDTO();
+        categoryDTO.setCategoryName("categoryNameTest");
+        return categoryDTO;
+    }
 }

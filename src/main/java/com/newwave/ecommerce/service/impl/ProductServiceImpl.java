@@ -117,23 +117,25 @@ public class ProductServiceImpl implements ProductService {
                 .imageUrl(product.getImageUrl())
                 .build();
 
-        Product p = productRepo.save(productE);
+        productRepo.save(productE);
         return ProductDTO.builder()
-                .productCode(p.getProductCode())
-                .productName(p.getProductName())
-                .quantityStock(p.getQuantityStock())
-                .price(p.getPrice())
-                .imageUrl(p.getImageUrl())
+                .productCode(productE.getProductCode())
+                .productName(productE.getProductName())
+                .quantityStock(productE.getQuantityStock())
+                .price(productE.getPrice())
+                .imageUrl(productE.getImageUrl())
                 .build();
     }
 
     private String generateProductCode(CategoryDTO categoryDTO) {
         Optional<Category> category = categoryRepo.findByCategoryName(categoryDTO.getCategoryName());
+        long count;
         if (category.isEmpty()) {
-            categoryService.addCategory(categoryDTO);
-            category = categoryRepo.findByCategoryName(categoryDTO.getCategoryName());
+            CategoryDTO newCategory = categoryService.addCategory(categoryDTO);
+            count = 0;
+            return newCategory.getCategoryCode() + "_" + String.format("%06d", (int)(count + 1));
         }
-        long count = productRepo.countByCategory(category.get());
+        count = productRepo.countByCategory(category.get());
         return category.get().getCategoryCode() + "_" + String.format("%06d", (int)(count + 1));
     }
 

@@ -5,7 +5,7 @@ import com.newwave.ecommerce.domain.CategoryDTO;
 import java.util.List;
 
 public interface CategoryService {
-    String addCategory(CategoryDTO categoryDTO);
+    CategoryDTO addCategory(CategoryDTO categoryDTO);
     CategoryDTO getCategory(String categoryName);
     List<CategoryDTO> getAllCategories();
     String deleteCategory(String categoryName);

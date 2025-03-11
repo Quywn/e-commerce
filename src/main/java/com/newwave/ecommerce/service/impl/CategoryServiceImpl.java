@@ -20,11 +20,15 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public String addCategory(CategoryDTO categoryDTO) {
+    public CategoryDTO addCategory(CategoryDTO categoryDTO) {
         Category category = new Category();
         category.setCategoryName(categoryDTO.getCategoryName());
         category.setCategoryCode(generateCategoryCode());
-        return "Save success category: "+ categoryRepo.save(category);
+        categoryRepo.save(category);
+        CategoryDTO newCategoryDTO = new CategoryDTO();
+        newCategoryDTO.setCategoryName(category.getCategoryName());
+        newCategoryDTO.setCategoryCode(category.getCategoryCode());
+        return newCategoryDTO;
     }
     private String generateCategoryCode() {
         long count = categoryRepo.count();
