@@ -32,7 +32,7 @@ public class CartServiceImplTest {
     void getCartByUserTestHappyCase() {
         Optional<CartDTO> expected = buildObjectUtils.buildCartDTOOptional();
         when(cartRepo.findCartByUsername("usernameTest")).thenReturn(buildObjectUtils.buildCartOptional());
-        Optional<CartDTO> actual = cartService.getCartByUser("usernameTest");
+        CartDTO actual = cartService.getCartByUser("usernameTest");
         Assertions.assertEquals(expected, actual);
     }
 

@@ -50,7 +50,7 @@ public class CartServiceImpl implements CartService {
                         .build(), product.getQuantityOrdered());
         c.setOrderProducts(orderProducts);
         cartRepo.save(c);
-        return getCartByUser(username).get();
+        return getCartByUser(username);
     }
 
 
@@ -74,7 +74,7 @@ public class CartServiceImpl implements CartService {
 
         cartRepo.save(cart);
 
-        return getCartByUser(username).get();
+        return getCartByUser(username);
     }
 
     public Double getCartTotal(CartDTO cart) {
@@ -90,7 +90,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Optional<CartDTO> getCartByUser(String username) {
+    public CartDTO getCartByUser(String username) {
         if (cartRepo.findCartByUsername(username).isEmpty()) {
             throw new NotFoundException("Cart not found by username: " + username);
         } else {
@@ -99,7 +99,7 @@ public class CartServiceImpl implements CartService {
             cartDTO.setCartId(c.getCartId());
             cartDTO.setUsername(c.getUsername());
             cartDTO.setOrderedProducts(c.getOrderProducts());
-            return Optional.of(cartDTO);
+            return cartDTO;
         }
     }
 
@@ -113,7 +113,7 @@ public class CartServiceImpl implements CartService {
         c.setUsername(username);
         c.setCartId(cartOptional.get().getCartId());
         cartRepo.save(c);
-        return getCartByUser(username).get();
+        return getCartByUser(username);
     }
 
     private void createCart(ProductDTO productDTO, String username) {

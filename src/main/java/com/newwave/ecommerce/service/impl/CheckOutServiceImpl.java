@@ -28,18 +28,14 @@ public class CheckOutServiceImpl implements CheckOutService {
 
     @Override
     public String checkOutCart(String username) {
-        Optional<CartDTO> cart = cartService.getCartByUser(username);
-
-        if (cart.isEmpty()) {
-            throw new NotFoundException("Cart not found");
-        }
+        CartDTO cart = cartService.getCartByUser(username);
 
         PaymentRequest paymentRequest = PaymentRequest.builder()
                 .username(username)
-                .paymentAmount(cartService.getCartTotal(cart.get()))
+                .paymentAmount(cartService.getCartTotal(cart))
                 .build();
 
-        OrderDTO orderDTO = orderService.addOrder(cart.get());
+        OrderDTO orderDTO = orderService.addOrder(cart);
         cartService.clearCartByUser(username);
 
         PaymentResponse paymentResponse = paymentDemoService.processPayment(paymentRequest);

@@ -18,7 +18,7 @@ public class CartController {
 
     @GetMapping("/cart")
     public ResponseEntity<CartDTO> getCartByUser(@RequestParam String username) {
-        return new ResponseEntity<>(cartService.getCartByUser(username).get(), HttpStatus.OK);
+        return new ResponseEntity<>(cartService.getCartByUser(username), HttpStatus.OK);
     }
 
     @DeleteMapping("/cart/clear")
