@@ -3,7 +3,9 @@ package com.newwave.ecommerce.common;
 import lombok.Getter;
 
 public class Constant {
-    private static final String SAMPLE_CONSTANT = "DEMO_CONSTANT";
+    public static final String FAIL = "FAIL";
+    public static final String PROCESS = "PROCESSING";
+    public static final String SUCCESS = "SUCCESS";
 
     @Getter
     public enum PaymentStatus {

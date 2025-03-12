@@ -4,12 +4,8 @@ import com.newwave.ecommerce.domain.ProductDTO;
 import com.newwave.ecommerce.service.impl.ProductServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-
-import static org.springframework.security.authorization.AuthorityReactiveAuthorizationManager.hasAuthority;
 
 
 @RestController

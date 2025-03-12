@@ -4,6 +4,7 @@ import com.newwave.ecommerce.domain.CartDTO;
 import com.newwave.ecommerce.domain.ProductDTO;
 import com.newwave.ecommerce.entity.Cart;
 import com.newwave.ecommerce.entity.Product;
+import com.newwave.ecommerce.exception.InsufficientStockException;
 import com.newwave.ecommerce.exception.NotFoundException;
 import com.newwave.ecommerce.repository.CartRepo;
 import com.newwave.ecommerce.repository.ProductRepo;
@@ -25,14 +26,19 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartDTO addProductToCart(ProductDTO product, String username) {
-        //todo: bonus logic check quantityStock
         if (productRepo.findByProductName(product.getProductName()).isEmpty()) {
             throw new NotFoundException("Product not found");
+        }
+
+        if (productRepo.findByProductName(product.getProductName()).get().getQuantityStock()
+                < product.getQuantityOrdered()) {
+            throw new InsufficientStockException("Insufficient stock");
         }
 
         if (cartRepo.findCartByUsername(username).isEmpty()) {
             createCart(product, username);
         }
+
         Cart c = cartRepo.findCartByUsername(username).get();
         Map<Product, Integer> orderProducts = c.getOrderProducts();
         orderProducts.put(Product.builder()
@@ -71,10 +77,9 @@ public class CartServiceImpl implements CartService {
         return getCartByUser(username).get();
     }
 
-    @Override
-    public Double getCartTotal(Cart cart) {
-        Double cartTotal = 0.0;
-        Map<Product, Integer> productsOrderList = cart.getOrderProducts();
+    public Double getCartTotal(CartDTO cart) {
+        double cartTotal = 0.0;
+        Map<Product, Integer> productsOrderList = cart.getOrderedProducts();
         for (Map.Entry<Product, Integer> entry : productsOrderList.entrySet()) {
             Product product = entry.getKey();
             Integer quantityOrdered = entry.getValue();

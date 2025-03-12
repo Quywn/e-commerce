@@ -23,12 +23,10 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepo productRepo;
     private final CategoryRepo categoryRepo;
-    private final CategoryServiceImpl categoryService;
 
-    public ProductServiceImpl(ProductRepo productRepo, CategoryRepo categoryRepo, CategoryServiceImpl categoryService) {
+    public ProductServiceImpl(ProductRepo productRepo, CategoryRepo categoryRepo) {
         this.productRepo = productRepo;
         this.categoryRepo = categoryRepo;
-        this.categoryService = categoryService;
     }
 
     public List<ProductDTO> getAllProducts() {
@@ -108,6 +106,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO addProduct(ProductDTO product) {
+
+        if (categoryRepo.findByCategoryName(product.getProductName()).isEmpty()) {
+            throw new NotFoundException("Category not found. Please first add category: "
+                    + product.getCategory().getCategoryName());
+        }
         Product productE = Product.builder()
                 .productCode(generateProductCode(product.getCategory()))
                 .productName(product.getProductName())
@@ -146,13 +149,7 @@ public class ProductServiceImpl implements ProductService {
     //format: {product_code}_xxxxxx | xxxxxx : [000001 - 999999]
     private String generateProductCode(CategoryDTO categoryDTO) {
         Optional<Category> category = categoryRepo.findByCategoryName(categoryDTO.getCategoryName());
-        long count;
-        if (category.isEmpty()) {
-            CategoryDTO newCategory = categoryService.addCategory(categoryDTO);
-            count = 0;
-            return newCategory.getCategoryCode() + "_" + String.format("%06d", (int)(count + 1));
-        }
-        count = productRepo.countByCategory(category.get());
+        long count = productRepo.countByCategory(category.get());
         return category.get().getCategoryCode() + "_" + String.format("%06d", (int)(count + 1));
     }
 }

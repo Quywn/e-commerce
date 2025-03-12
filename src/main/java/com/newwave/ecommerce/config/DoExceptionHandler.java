@@ -1,6 +1,7 @@
 package com.newwave.ecommerce.config;
 
 import com.newwave.ecommerce.exception.ExpiredJwtException;
+import com.newwave.ecommerce.exception.InsufficientStockException;
 import com.newwave.ecommerce.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,12 @@ public class DoExceptionHandler {
     @ResponseStatus(HttpStatus.REQUEST_TIMEOUT)
     public ResponseEntity<String> handleJwtTimeout(ExpiredJwtException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.REQUEST_TIMEOUT);
+    }
+
+    @ExceptionHandler(InsufficientStockException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<String> handleInsufficient(InsufficientStockException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
 }

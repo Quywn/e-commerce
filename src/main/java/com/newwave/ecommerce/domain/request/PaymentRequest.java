@@ -1,12 +1,11 @@
 package com.newwave.ecommerce.domain.request;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class PaymentRequest {
     private String username;
-    private String paymentMethod;
-    private String cardNumber;
-    private String cardExpiry;
-    private String cardCvc;
+    private Double paymentAmount;
 }

@@ -26,7 +26,7 @@ public class ProductServiceImplTest {
 
     @BeforeEach
     public void setup() {
-        productService = new ProductServiceImpl(productRepo, categoryRepo, categoryServiceImpl);
+        productService = new ProductServiceImpl(productRepo, categoryRepo);
     }
 
     @Test
