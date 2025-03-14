@@ -67,13 +67,4 @@ public class JwtTokenUtil implements Serializable {
         SignedJWT signedJWT = SignedJWT.parse(token);
         return signedJWT.getJWTClaimsSet().getSubject();
     }
-
-    //todo: get roles from user
-    public List<String> getRolesFromToken(String token) throws ParseException {
-            SignedJWT jwt = SignedJWT.parse(token);
-            JWTClaimsSet claims = jwt.getJWTClaimsSet();
-            return (List<String>) claims.getClaim("authorities");
-
-    }
-
 }
