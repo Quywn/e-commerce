@@ -15,7 +15,7 @@ public class CheckOutController {
         this.checkOutService = checkOutService;
     }
 
-    @PostMapping
+    @PostMapping("/user/checkout")
     public ResponseEntity<String> checkOut(@RequestParam String username) {
         return new ResponseEntity<>(checkOutService.checkOutCart(username), HttpStatus.OK);
     }

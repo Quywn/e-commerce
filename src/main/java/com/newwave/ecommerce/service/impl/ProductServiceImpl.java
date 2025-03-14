@@ -107,13 +107,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDTO addProduct(ProductDTO product) {
 
-        if (categoryRepo.findByCategoryName(product.getProductName()).isEmpty()) {
+        Optional<Category> category = categoryRepo.findByCategoryName(product.getCategory().getCategoryName());
+        if (category.isEmpty()) {
             throw new NotFoundException("Category not found. Please first add category: "
                     + product.getCategory().getCategoryName());
         }
         Product productE = Product.builder()
                 .productCode(generateProductCode(product.getCategory()))
                 .productName(product.getProductName())
+                .category(category.get())
                 .quantityStock(product.getQuantityStock())
                 .price(product.getPrice())
                 .imageUrl(product.getImageUrl())

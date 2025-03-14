@@ -29,7 +29,7 @@ public class Product implements Serializable {
     private String productName;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "category_name")
+    @JoinColumn(name = "category")
     private Category category;
 
     @DecimalMin(value = "0.00")

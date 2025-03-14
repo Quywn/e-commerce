@@ -16,25 +16,25 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping("/products")
+    @GetMapping("/user/products")
     public ResponseEntity<List<ProductDTO>> getAllProducts() {
         List<ProductDTO> products = productService.getAllProducts();
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
-    @GetMapping("/productsA_Z")
+    @GetMapping("/user/productsA_Z")
     public ResponseEntity<List<ProductDTO>> getProductsAZ() {
         List<ProductDTO> products = productService.getProductListA_Z();
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
-    @GetMapping("/product")
+    @GetMapping("/user/product")
     public ResponseEntity<ProductDTO> getProductByName(@RequestParam("productName") String productName) {
         ProductDTO productDTO = productService.getProductByName(productName);
         return new ResponseEntity<>(productDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/products/page")
+    @GetMapping("/user/products/page")
     public ResponseEntity<List<ProductDTO>> getProductsPage(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int pageSize) {
@@ -53,7 +53,7 @@ public class ProductController {
         return new ResponseEntity<>( productService.removeProductByName(productName), HttpStatus.OK);
     }
 
-    @GetMapping("/product/category")
+    @GetMapping("/user/product/category")
     public ResponseEntity<List<ProductDTO>> getProductsByCategory(@RequestParam String categoryName) {
         List<ProductDTO> products = productService.getProductsByCategory(categoryName);
         return new ResponseEntity<>(products, HttpStatus.OK);
