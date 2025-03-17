@@ -11,4 +11,5 @@ public interface ProductService {
     String removeProductByName(String productName);
     ProductDTO addProduct(ProductDTO product);
     List<ProductDTO> getProductsByCategory(String categoryName);
+    ProductDTO updateProduct(ProductDTO product);
 }

@@ -4,11 +4,11 @@ import com.newwave.ecommerce.domain.CategoryDTO;
 import com.newwave.ecommerce.domain.ProductDTO;
 import com.newwave.ecommerce.entity.Category;
 import com.newwave.ecommerce.entity.Product;
+import com.newwave.ecommerce.exception.AlreadyExistsException;
 import com.newwave.ecommerce.exception.NotFoundException;
 import com.newwave.ecommerce.repository.CategoryRepo;
 import com.newwave.ecommerce.repository.ProductRepo;
 import com.newwave.ecommerce.service.ProductService;
-import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepo productRepo;
@@ -29,20 +28,15 @@ public class ProductServiceImpl implements ProductService {
         this.categoryRepo = categoryRepo;
     }
 
+    @Override
     public List<ProductDTO> getAllProducts() {
         List<Product> productList = productRepo.findAll();
         List<ProductDTO> productDTOList = new ArrayList<>();
-        ProductDTO productDTO;
+
         for (Product product : productList) {
-            productDTO = ProductDTO.builder()
-                    .productCode(product.getProductCode())
-                    .productName(product.getProductName())
-                    .quantityStock(product.getQuantityStock())
-                    .price(product.getPrice())
-                    .imageUrl(product.getImageUrl())
-                    .build();
-            productDTOList.add(productDTO);
+            productDTOList.add(buildProductDTO(product));
         }
+
         return productDTOList;
     }
 
@@ -55,14 +49,7 @@ public class ProductServiceImpl implements ProductService {
             throw new NotFoundException("Product not found");
         }
 
-        return ProductDTO.builder()
-                .productCode(product.get().getProductCode())
-                .productName(product.get().getProductName())
-                .quantityStock(product.get().getQuantityStock())
-                .price(product.get().getPrice())
-                .imageUrl(product.get().getImageUrl())
-                .build();
-
+        return buildProductDTO(product.get());
     }
 
     @Override
@@ -78,57 +65,36 @@ public class ProductServiceImpl implements ProductService {
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<Product> productPage = productRepo.findAll(pageable);
         productPage.stream().toList().forEach(product -> {
-            productDTO.setProductName(product.getProductName());
-            productDTO.setQuantityStock(product.getQuantityStock());
-            productDTO.setPrice(product.getPrice());
-            productDTO.setImageUrl(product.getImageUrl());
-            productDTO.setProductCode(product.getProductCode());
+            buildProductDTO(product);
             list.add(productDTO);
         });
+
         return list;
     }
 
     @Override
     public String removeProductByName(String productName) {
-        Optional<Product> product = productRepo.findByProductName(productName);
-
-        if(product.isEmpty()) {
-            return "Product not found";
-        }
         try {
-            productRepo.delete(product.get());
+            productRepo.deleteProductByProductName(productName);
         } catch (Exception e) {
             return e.getMessage();
         }
-        return "Product removed: "+ product.get().getProductName();
+
+        return "Product removed success";
 
     }
 
     @Override
     public ProductDTO addProduct(ProductDTO product) {
 
-        Optional<Category> category = categoryRepo.findByCategoryName(product.getCategory().getCategoryName());
-        if (category.isEmpty()) {
-            throw new NotFoundException("Category not found. Please first add category: "
-                    + product.getCategory().getCategoryName());
+        if (productRepo.findByProductName(product.getProductName()).isPresent()) {
+            throw new AlreadyExistsException("Product already exists");
         }
-        Product productE = Product.builder()
-                .productCode(generateProductCode(product.getCategory()))
-                .productName(product.getProductName())
-                .category(category.get())
-                .quantityStock(product.getQuantityStock())
-                .price(product.getPrice())
-                .imageUrl(product.getImageUrl())
-                .build();
 
+        Product productE = buildProduct(product);
         productRepo.save(productE);
-        return ProductDTO.builder()
-                .productCode(productE.getProductCode())
-                .productName(productE.getProductName())
-                .quantityStock(productE.getQuantityStock())
-                .price(productE.getPrice())
-                .imageUrl(productE.getImageUrl())
-                .build();
+
+        return buildProductDTO(productE);
     }
 
 
@@ -136,22 +102,59 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDTO> getProductsByCategory(String categoryName) {
         List<ProductDTO> productDTOList = new ArrayList<>();
         List<Product> productList = productRepo.findByCategory_CategoryName(categoryName);
+
         for (Product product : productList) {
-            productDTOList.add(ProductDTO.builder()
-                    .productCode(product.getProductCode())
-                    .productName(product.getProductName())
-                    .quantityStock(product.getQuantityStock())
-                    .price(product.getPrice())
-                    .imageUrl(product.getImageUrl())
-                    .build());
+            productDTOList.add(buildProductDTO(product));
         }
 
         return productDTOList;
     }
+
+    @Override
+    public ProductDTO updateProduct(ProductDTO product) {
+
+        if (productRepo.findByProductName(product.getProductName()).isEmpty()) {
+            throw new NotFoundException("Product not found");
+        }
+
+        Product productE = buildProduct(product);
+        productRepo.deleteProductByProductName(product.getProductName());
+        productRepo.save(productE);
+
+        return buildProductDTO(productE);
+    }
+
+    private Product buildProduct(ProductDTO productDTO) {
+        Optional<Category> category = categoryRepo.findByCategoryName(productDTO.getCategory().getCategoryName());
+
+        if (category.isEmpty()) {
+            throw new NotFoundException("Category not found. Please first add category: "
+                    + productDTO.getCategory().getCategoryName());
+        }
+
+        return Product.builder()
+                .productCode(generateProductCode(category.get()))
+                .productName(productDTO.getProductName())
+                .category(category.get())
+                .quantityStock(productDTO.getQuantityStock())
+                .price(productDTO.getPrice())
+                .imageUrl(productDTO.getImageUrl())
+                .build();
+    }
+
+    private ProductDTO buildProductDTO(Product product) {
+        return ProductDTO.builder()
+                .productCode(product.getProductCode())
+                .productName(product.getProductName())
+                .quantityStock(product.getQuantityStock())
+                .price(product.getPrice())
+                .imageUrl(product.getImageUrl())
+                .build();
+    }
+
     //format: {product_code}_xxxxxx | xxxxxx : [000001 - 999999]
-    private String generateProductCode(CategoryDTO categoryDTO) {
-        Optional<Category> category = categoryRepo.findByCategoryName(categoryDTO.getCategoryName());
-        long count = productRepo.countByCategory(category.get());
-        return category.get().getCategoryCode() + "_" + String.format("%06d", (int)(count + 1));
+    private String generateProductCode(Category category) {
+        long count = productRepo.countByCategory(category);
+        return category.getCategoryCode() + "_" + String.format("%06d", (int)(count + 1));
     }
 }

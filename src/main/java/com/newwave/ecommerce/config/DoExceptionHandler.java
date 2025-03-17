@@ -1,5 +1,6 @@
 package com.newwave.ecommerce.config;
 
+import com.newwave.ecommerce.exception.AlreadyExistsException;
 import com.newwave.ecommerce.exception.ExpiredJwtException;
 import com.newwave.ecommerce.exception.InsufficientStockException;
 import com.newwave.ecommerce.exception.NotFoundException;
@@ -26,6 +27,12 @@ public class DoExceptionHandler {
     @ExceptionHandler(InsufficientStockException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<String> handleInsufficient(InsufficientStockException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<String> handleInsufficient(AlreadyExistsException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

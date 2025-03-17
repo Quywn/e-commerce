@@ -42,15 +42,15 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
-    @PostMapping("/admin/product")
+    @PostMapping("/admin/product/create")
     public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductDTO productDTO) {
         ProductDTO productDTO1 = productService.addProduct(productDTO);
         return new ResponseEntity<>(productDTO1, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/admin/product")
+    @DeleteMapping("/admin/product/delete")
     public ResponseEntity<String> removeProductByName(@RequestParam String productName) {
-        return new ResponseEntity<>( productService.removeProductByName(productName), HttpStatus.OK);
+        return new ResponseEntity<>(productService.removeProductByName(productName), HttpStatus.OK);
     }
 
     @GetMapping("/user/product/category")
@@ -59,4 +59,9 @@ public class ProductController {
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
+    @PutMapping("/admin/product/update")
+    public ResponseEntity<ProductDTO> updateProduct(@RequestBody ProductDTO productDTO) {
+        ProductDTO productDTO1 = productService.updateProduct(productDTO);
+        return new ResponseEntity<>(productDTO1, HttpStatus.OK);
+    }
 }

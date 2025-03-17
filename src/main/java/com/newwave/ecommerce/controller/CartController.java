@@ -5,9 +5,10 @@ import com.newwave.ecommerce.domain.ProductDTO;
 import com.newwave.ecommerce.service.impl.CartServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-
+@PostAuthorize("returnObject.username == authentication.name")
 @RestController("/user")
 public class CartController {
     private final CartServiceImpl cartService;
