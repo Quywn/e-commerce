@@ -9,6 +9,9 @@ import com.newwave.ecommerce.exception.NotFoundException;
 import com.newwave.ecommerce.repository.CartRepo;
 import com.newwave.ecommerce.repository.ProductRepo;
 import com.newwave.ecommerce.service.CartService;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,37 +28,34 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartDTO addProductToCart(ProductDTO product, String username) {
-        if (productRepo.findByProductName(product.getProductName()).isEmpty()) {
+    public String addProductToCart(ProductDTO product, String username) {
+        checkAuthentication(username);
+        Optional<Product> productE = productRepo.findByProductName(product.getProductName());
+        if (productE.isEmpty()) {
             throw new NotFoundException("Product not found");
         }
 
-        if (productRepo.findByProductName(product.getProductName()).get().getQuantityStock()
-                < product.getQuantityOrdered()) {
+        if (productE.get().getQuantityStock() < product.getQuantityOrdered()) {
             throw new InsufficientStockException("Insufficient stock");
         }
 
         if (cartRepo.findCartByUsername(username).isEmpty()) {
-            createCart(product, username);
+            createCart(productE.get(), username, product.getQuantityOrdered());
+            return "Add product successfully";
         }
 
         Cart c = cartRepo.findCartByUsername(username).get();
         Map<Product, Integer> orderProducts = c.getOrderProducts();
-        orderProducts.put(Product.builder()
-                        .productName(product.getProductName())
-                        .quantityOrdered(product.getQuantityOrdered())
-                        .quantityStock(product.getQuantityStock())
-                        .imageUrl(product.getImageUrl())
-                        .price(product.getPrice())
-                        .build(), product.getQuantityOrdered());
+        orderProducts.put(productE.get(), product.getQuantityOrdered());
         c.setOrderProducts(orderProducts);
         cartRepo.save(c);
-        return getCartByUser(username);
+        return "Add product successfully";
     }
 
 
     @Override
     public CartDTO removeProductFromCart(String productName, String username) {
+        checkAuthentication(username);
         Optional<Cart> cartOptional = cartRepo.findCartByUsername(username);
         if (cartOptional.isEmpty()) {
             throw new NotFoundException("Cart not found by username: " + username);
@@ -78,6 +78,7 @@ public class CartServiceImpl implements CartService {
     }
 
     public Double getCartTotal(CartDTO cart) {
+        checkAuthentication(cart.getUsername());
         double cartTotal = 0.0;
         Map<Product, Integer> productsOrderList = cart.getOrderedProducts();
         for (Map.Entry<Product, Integer> entry : productsOrderList.entrySet()) {
@@ -91,6 +92,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartDTO getCartByUser(String username) {
+        checkAuthentication(username);
         if (cartRepo.findCartByUsername(username).isEmpty()) {
             throw new NotFoundException("Cart not found by username: " + username);
         } else {
@@ -105,6 +107,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartDTO clearCartByUser(String username) {
+        checkAuthentication(username);
         Optional<Cart> cartOptional = cartRepo.findCartByUsername(username);
         if (cartOptional.isEmpty()) {
             throw new NotFoundException("Cart not found by username: " + username);
@@ -116,20 +119,23 @@ public class CartServiceImpl implements CartService {
         return getCartByUser(username);
     }
 
-    private void createCart(ProductDTO productDTO, String username) {
+    private void createCart(Product productE, String username, int quantityOrdered) {
         Cart cart = new Cart();
         cart.setUsername(username);
+        productE.setQuantityOrdered(quantityOrdered);
         Map<Product, Integer> orderProducts = new HashMap<>();
-        Product product = Product.builder()
-                .imageUrl(productDTO.getImageUrl())
-                .price(productDTO.getPrice())
-                .quantityOrdered(productDTO.getQuantityOrdered())
-                .quantityStock(productDTO.getQuantityStock())
-                .productName(productDTO.getProductName())
-                .build();
-        orderProducts.put(product, product.getQuantityOrdered());
+        orderProducts.put(productE, quantityOrdered);
         cart.setOrderProducts(orderProducts);
         cartRepo.save(cart);
+    }
+
+    private void checkAuthentication(String username) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+        assert currentUsername != null;
+        if (!currentUsername.equals(username)) {
+            throw new AccessDeniedException("You are not allowed to modify the cart of another user.");
+        }
     }
 
 }

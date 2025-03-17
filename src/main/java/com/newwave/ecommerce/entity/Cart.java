@@ -1,5 +1,6 @@
 package com.newwave.ecommerce.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,5 +31,6 @@ public class Cart implements Serializable {
     @CollectionTable(name = "cart_product_quantities", joinColumns = @JoinColumn(name = "cart_id"))
     @MapKeyJoinColumn(name = "product_id")
     @Column(name = "order_products")
+    @JsonIgnore
     private Map<Product, Integer> orderProducts = new HashMap<>();
 }

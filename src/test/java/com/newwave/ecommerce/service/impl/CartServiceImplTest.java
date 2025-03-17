@@ -47,10 +47,10 @@ public class CartServiceImplTest {
 
     @Test
     void addProductToCartTestHappyCase() {
-        CartDTO expect = buildObjectUtils.buildCartDTOOptional().get();
+        String expect = "Add product successfully";
         when(productRepo.findByProductName(anyString())).thenReturn(buildObjectUtils.buildProductOptonal());
         when(cartRepo.findCartByUsername(anyString())).thenReturn(buildObjectUtils.buildCartOptional());
-        CartDTO actual = cartService.addProductToCart(buildObjectUtils.buildProductDTO(), "usernameTest");
+        String actual = cartService.addProductToCart(buildObjectUtils.buildProductDTO(), "usernameTest");
         verify(cartRepo, times(1)).save(any());
         assertEquals(expect, actual);
     }

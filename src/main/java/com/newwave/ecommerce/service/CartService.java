@@ -8,6 +8,6 @@ public interface CartService {
 
     CartDTO clearCartByUser(String username);
     CartDTO getCartByUser(String username);
-    CartDTO addProductToCart(ProductDTO product, String username);
+    String addProductToCart(ProductDTO product, String username);
     CartDTO removeProductFromCart(String productName, String username);
 }
