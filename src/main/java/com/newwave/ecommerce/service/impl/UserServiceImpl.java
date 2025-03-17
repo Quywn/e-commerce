@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String deleteUser(String username, String password) {
+    public String deleteUser(String username) {
         utils.checkAuthentication(username);
         Optional<User> user = userRepo.findByUsername(username);
 

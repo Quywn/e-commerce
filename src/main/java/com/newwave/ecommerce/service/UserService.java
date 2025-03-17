@@ -6,6 +6,6 @@ public interface UserService {
     String register(UserDTO user);
     UserDTO getUser(String username);
     String updateUser(UserDTO userDTO);
-    String deleteUser(String username, String password);
+    String deleteUser(String username);
 
 }

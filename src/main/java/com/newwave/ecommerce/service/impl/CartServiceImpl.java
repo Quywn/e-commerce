@@ -100,6 +100,7 @@ public class CartServiceImpl implements CartService {
         } else {
             Cart c = cartRepo.findCartByUsername(username).get();
             Map<ProductDTO, Integer> productDTOIntegerMap = new HashMap<>(Map.of());
+            //todo check value
             c.getOrderProducts().forEach((product, value) -> {
                 productDTOIntegerMap.put(buildProductDTO(product), value);
             });

@@ -1,5 +1,7 @@
 package com.newwave.ecommerce.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,11 +21,8 @@ public class Orders {
     @Column(name = "orders_id")
     private Long orderId;
     private String username;
-    @ElementCollection
-    @CollectionTable(name = "orders_product_quantities", joinColumns = @JoinColumn(name = "orders_id"))
-    @MapKeyJoinColumn(name = "product_id")
-    @Column(name = "orders_products")
-    private Map<Product, Integer> orderProducts = new HashMap<>();
+    private String orderedProduct;
     private String orderStatus;
+
 
 }
