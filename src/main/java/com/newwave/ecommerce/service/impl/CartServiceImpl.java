@@ -1,5 +1,6 @@
 package com.newwave.ecommerce.service.impl;
 
+import com.newwave.ecommerce.common.Utils;
 import com.newwave.ecommerce.domain.CartDTO;
 import com.newwave.ecommerce.domain.ProductDTO;
 import com.newwave.ecommerce.entity.Cart;
@@ -21,6 +22,7 @@ import java.util.Optional;
 public class CartServiceImpl implements CartService {
     public final CartRepo cartRepo;
     public final ProductRepo productRepo;
+    Utils utils = new Utils();
 
     public CartServiceImpl(CartRepo cartRepo, ProductRepo productRepo) {
         this.cartRepo = cartRepo;
@@ -29,7 +31,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public String addProductToCart(ProductDTO product, String username) {
-        checkAuthentication(username);
+        this.utils.checkAuthentication(username);
         Optional<Product> productE = productRepo.findByProductName(product.getProductName());
         if (productE.isEmpty()) {
             throw new NotFoundException("Product not found");
@@ -54,8 +56,8 @@ public class CartServiceImpl implements CartService {
 
 
     @Override
-    public CartDTO removeProductFromCart(String productName, String username) {
-        checkAuthentication(username);
+    public String removeProductFromCart(String productName, String username) {
+        this.utils.checkAuthentication(username);
         Optional<Cart> cartOptional = cartRepo.findCartByUsername(username);
         if (cartOptional.isEmpty()) {
             throw new NotFoundException("Cart not found by username: " + username);
@@ -74,40 +76,45 @@ public class CartServiceImpl implements CartService {
 
         cartRepo.save(cart);
 
-        return getCartByUser(username);
+        return "Delete product successfully";
     }
 
     public Double getCartTotal(CartDTO cart) {
-        checkAuthentication(cart.getUsername());
-        double cartTotal = 0.0;
-        Map<Product, Integer> productsOrderList = cart.getOrderedProducts();
-        for (Map.Entry<Product, Integer> entry : productsOrderList.entrySet()) {
-            Product product = entry.getKey();
-            Integer quantityOrdered = entry.getValue();
-            cartTotal += product.getQuantityOrdered() * quantityOrdered;
-        }
-        return cartTotal;
+//        this.utils.checkAuthentication(cart.getUsername());
+//        double cartTotal = 0.0;
+//        Map<Product, Integer> productsOrderList = cart.getOrderedProducts();
+//        for (Map.Entry<Product, Integer> entry : productsOrderList.entrySet()) {
+//            Product product = entry.getKey();
+//            Integer quantityOrdered = entry.getValue();
+//            cartTotal += product.getQuantityOrdered() * quantityOrdered;
+//        }
+        return 0.0;
 
     }
 
     @Override
     public CartDTO getCartByUser(String username) {
-        checkAuthentication(username);
+        this.utils.checkAuthentication(username);
         if (cartRepo.findCartByUsername(username).isEmpty()) {
             throw new NotFoundException("Cart not found by username: " + username);
         } else {
             Cart c = cartRepo.findCartByUsername(username).get();
+            Map<ProductDTO, Integer> productDTOIntegerMap = new HashMap<>(Map.of());
+            c.getOrderProducts().forEach((product, value) -> {
+                productDTOIntegerMap.put(buildProductDTO(product), value);
+            });
+
             CartDTO cartDTO = new CartDTO();
             cartDTO.setCartId(c.getCartId());
             cartDTO.setUsername(c.getUsername());
-            cartDTO.setOrderedProducts(c.getOrderProducts());
+            cartDTO.setOrderedProducts(productDTOIntegerMap);
             return cartDTO;
         }
     }
 
     @Override
     public CartDTO clearCartByUser(String username) {
-        checkAuthentication(username);
+        this.utils.checkAuthentication(username);
         Optional<Cart> cartOptional = cartRepo.findCartByUsername(username);
         if (cartOptional.isEmpty()) {
             throw new NotFoundException("Cart not found by username: " + username);
@@ -129,13 +136,12 @@ public class CartServiceImpl implements CartService {
         cartRepo.save(cart);
     }
 
-    private void checkAuthentication(String username) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName();
-        assert currentUsername != null;
-        if (!currentUsername.equals(username)) {
-            throw new AccessDeniedException("You are not allowed to modify the cart of another user.");
-        }
-    }
-
-}
+    private ProductDTO buildProductDTO(Product product) {
+        return ProductDTO.builder()
+                .productCode(product.getProductCode())
+                .productName(product.getProductName())
+                .quantityStock(product.getQuantityStock())
+                .price(product.getPrice())
+                .imageUrl(product.getImageUrl())
+                .build();
+    }}

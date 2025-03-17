@@ -18,8 +18,8 @@ public class CartController {
     }
 
     @GetMapping("/user/cart")
-    public ResponseEntity<CartDTO> getCartByUser(@RequestParam String username) {
-        return new ResponseEntity<>(cartService.getCartByUser(username), HttpStatus.OK);
+    public ResponseEntity<String> getCartByUser(@RequestParam String username) {
+        return new ResponseEntity<>(cartService.getCartByUser(username).toString(), HttpStatus.OK);
     }
 
     @DeleteMapping("/user/cart/clear")
@@ -29,9 +29,8 @@ public class CartController {
     }
 
     @DeleteMapping("user/cart/product")
-    public ResponseEntity<CartDTO> removeProductFromCart(@RequestParam String productName, @RequestParam String username) {
-        CartDTO cartDTO = cartService.removeProductFromCart(productName, username);
-        return new ResponseEntity<>(cartDTO, HttpStatus.OK);
+    public ResponseEntity<String> removeProductFromCart(@RequestParam String productName, @RequestParam String username) {
+        return new ResponseEntity<>(cartService.removeProductFromCart(productName, username), HttpStatus.OK);
     }
 
     @PostMapping("/user/cart/{username}")

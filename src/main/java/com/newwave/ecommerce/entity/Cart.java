@@ -33,4 +33,6 @@ public class Cart implements Serializable {
     @Column(name = "order_products")
     @JsonIgnore
     private Map<Product, Integer> orderProducts = new HashMap<>();
+
+    private String status;
 }

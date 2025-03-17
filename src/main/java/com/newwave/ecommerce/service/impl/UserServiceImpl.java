@@ -1,5 +1,6 @@
 package com.newwave.ecommerce.service.impl;
 
+import com.newwave.ecommerce.common.Utils;
 import com.newwave.ecommerce.domain.RoleDTO;
 import com.newwave.ecommerce.domain.UserDTO;
 import com.newwave.ecommerce.entity.Role;
@@ -18,6 +19,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepo roleRepo;
+    Utils utils;
 
     public UserServiceImpl(UserRepo userRepo, PasswordEncoder passwordEncoder, RoleRepo roleRepo) {
         this.userRepo = userRepo;
@@ -72,6 +74,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String updateUser(UserDTO userDTO) {
+        utils.checkAuthentication(userDTO.getUsername());
         Optional<User> user = userRepo.findByUsername(userDTO.getUsername());
 
         if (user.isEmpty()) {
@@ -88,6 +91,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String deleteUser(String username, String password) {
+        utils.checkAuthentication(username);
         Optional<User> user = userRepo.findByUsername(username);
 
         if (user.isEmpty()) {

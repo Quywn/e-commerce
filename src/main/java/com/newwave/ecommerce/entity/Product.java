@@ -1,5 +1,7 @@
 package com.newwave.ecommerce.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
@@ -30,6 +32,7 @@ public class Product implements Serializable {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category")
+    @JsonIgnore
     private Category category;
 
     @DecimalMin(value = "0.00")
