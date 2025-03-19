@@ -2,6 +2,7 @@ package com.newwave.ecommerce.service.impl;
 
 import com.newwave.ecommerce.domain.CategoryDTO;
 import com.newwave.ecommerce.entity.Category;
+import com.newwave.ecommerce.exception.AlreadyExistsException;
 import com.newwave.ecommerce.exception.NotFoundException;
 import com.newwave.ecommerce.repository.CategoryRepo;
 import com.newwave.ecommerce.service.CategoryService;
@@ -20,6 +21,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDTO addCategory(CategoryDTO categoryDTO) {
+        Optional<Category> categoryDb = categoryRepo.findByCategoryName(categoryDTO.getCategoryName());
+        if (categoryDb.isPresent()) {
+            throw new AlreadyExistsException("Category is already exists");
+        }
         Category category = new Category();
         category.setCategoryName(categoryDTO.getCategoryName());
         category.setCategoryCode(generateCategoryCode());

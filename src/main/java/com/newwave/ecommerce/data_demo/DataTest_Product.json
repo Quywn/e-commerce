@@ -1,8 +1,9 @@
 {
-  "productName": "Hamburger",
-  "price": 2.0,
+  "productName": "Baguette",
+  "price": 0.5,
   "category": {
-    "categoryName": "Food"
+    "categoryName": "Bread"
   },
-  "quantityStock": 3
+  "quantityStock": 1,
+  "imageUrl": "https://happyvegannie.com/wp-content/uploads/2023/05/img-8735-web.jpg"
 }

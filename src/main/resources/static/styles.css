@@ -15,10 +15,19 @@ header {
     padding: 1rem 0;
 }
 
+nav {
+    background-color: #333;
+    font-family: 'Arial', sans-serif;
+    padding: 10px 0;
+}
+
+/* Định dạng cho các liên kết trong nav */
 nav ul {
-    list-style-type: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: flex;
-    justify-content: center;
+    justify-content: left;
 }
 
 nav ul li {
@@ -29,6 +38,57 @@ nav ul li a {
     color: white;
     text-decoration: none;
     font-size: 18px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 1s, color 1s;
+}
+
+/* Hiệu ứng hover */
+nav ul li a:hover {
+    background-color: #f39c12;
+    color: #333;
+    transition: background-color 1s, color 1s;
+}
+
+/* Responsive - Ẩn menu và hiển thị nút hamburger trên màn hình nhỏ */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.menu-toggle div {
+    width: 30px;
+    height: 5px;
+    background-color: white;
+    border-radius: 5px;
+    margin-left: 20px;
+}
+
+/* Đối với thanh điều hướng trên các màn hình nhỏ (responsive) */
+@media (max-width: 768px) {
+    nav ul {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        max-height: 0;
+    }
+
+    nav ul li {
+        margin: 10px 0;
+    }
+
+    nav ul li a {
+        font-size: 20px;
+    }
+
+    .menu-toggle {
+        display: flex;
+    }
 }
 
 .banner {
@@ -38,15 +98,6 @@ nav ul li a {
 
 .banner img {
     width: 100%;
-    height: auto;
-}
-.logo {
-    text-align: left;
-    margin: 0 20px;
-}
-
-.logo img {
-    width: 20%;
     height: auto;
 }
 

@@ -1,3 +1,11 @@
+// Hàm để toggle menu khi nhấn vào hamburger
+const menuToggle = document.getElementById('menuToggle');
+const menuList = document.getElementById('menuList');
+
+menuToggle.addEventListener('click', () => {
+    menuList.classList.toggle('show');
+});
+
 fetch('http://localhost:8080/general/products')
     .then(response => response.json())
     .then(data => {
