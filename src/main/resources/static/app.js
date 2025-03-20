@@ -13,12 +13,13 @@ function toggleSearchInput() {
 const menuToggle = document.querySelector('.menu-toggle');
 const menuContainer = document.querySelector('.menu-container');
 
-// Lắng nghe sự kiện click vào hamburger button
+//Listen click hamburger button
 menuToggle.addEventListener('click', () => {
     menuContainer.classList.toggle('open');  // Mở/đóng div chứa menu
     menuToggle.classList.toggle('open');  // Thêm hoặc xóa lớp 'open' từ button hamburger
 });
 
+//fetch data
 fetch('http://localhost:8080/general/products')
     .then(response => response.json())
     .then(data => {
