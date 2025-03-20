@@ -8,7 +8,6 @@
 header {
     background-color: #333;
     padding: 1rem 0;
-    /*padding: 10px;*/
     position: relative;
     z-index: 10; /* Đảm bảo header luôn ở trên */
 }
@@ -16,9 +15,9 @@ header {
 /* Header */
 .header-container {
     display: flex;
-    align-items: center; /* Align items vertically */
-    justify-content: space-between; /* Space between logo, menu, and icons */
-    padding: 0 20px; /* Adjust the padding to your preference */
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
 }
 
 /* Logo */
@@ -40,7 +39,7 @@ nav ul {
     padding: 0;
     display: flex;
     justify-content: left;
-    gap: 20px; /* Ensure space between items */
+    gap: 20px;
 }
 
 nav ul li {
@@ -66,10 +65,9 @@ nav ul li a:hover {
 .header-right {
     display: flex;
     align-items: center;
-    gap: 20px; /* Add space between search box and cart */
+    gap: 20px;
 }
 
-/* Search box */
 .search-box {
     display: flex;
     align-items: center;
@@ -155,7 +153,6 @@ nav ul li a:hover {
         top: 100%; /* Đặt div ngay dưới hamburger */
         left: 0;
         width: 100%;
-        background-color: transparent;
         z-index: 5;
         border-radius: 5px;
     }
@@ -180,6 +177,7 @@ nav ul li a:hover {
         transform: rotate(-10deg);
         transform-origin: 5px;
     }
+
     /* Cải thiện layout của menu */
     nav ul {
         display: flex;
@@ -200,10 +198,8 @@ nav ul li a:hover {
     nav ul li a:hover {
         background-color: #f39c12;
     }
-
-
-
 }
+
 .banner {
     text-align: center;
     margin: 20px 0;
