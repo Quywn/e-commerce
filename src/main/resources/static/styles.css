@@ -137,8 +137,8 @@ nav ul li a:hover {
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-/* Responsive menu toggle - Hide menu and show hamburger in small windows */
-@media (max-width: 900px) {
+/* Responsive menu toggle - Hide menu and show hamburger in windows < 1300px */
+@media (max-width: 1300px) {
     .logo {
         display: none;
     }
@@ -146,7 +146,6 @@ nav ul li a:hover {
         display: flex;
     }
 
-    /* Div chứa menu mặc định ẩn đi */
     .menu-container {
         display: none;
         position: absolute;
@@ -238,10 +237,82 @@ nav ul li a:hover {
     border-radius: 5px;
 }
 
+/* Footer Container */
 footer {
     background-color: #333;
     color: white;
-    padding: 10px;
+    padding: 40px 0;
     text-align: center;
-    margin-top: 20px;
+}
+
+/* Footer Sections */
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-section {
+    width: 30%;
+    margin-bottom: 20px;
+}
+
+.footer-section h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #ffcc00; /* Màu vàng cho tiêu đề */
+}
+
+.footer-section p {
+    font-size: 1em;
+    line-height: 1.6;
+}
+
+/* Social Media Links */
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 10px;
+}
+
+.footer-section a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer-section a:hover {
+    color: #ffcc00;
+}
+
+.footer-section a i {
+    font-size: 1.5em;
+}
+
+/* Footer Bottom */
+.footer-bottom {
+    margin-top: 30px;
+    font-size: 0.9em;
+    color: #bbb;
+}
+
+/* Responsive Design */
+@media (max-width: 1300px) {
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-section {
+        width: 100%;
+        text-align: center;
+    }
 }
