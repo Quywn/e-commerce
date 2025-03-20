@@ -26,26 +26,6 @@ header {
     height: 70px;
 }
 
-.menu-toggle {
-    display: none; /* Mặc định ẩn button trên màn hình lớn */
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    width: 30px;
-    height: 25px;
-    cursor: pointer;
-    background-color: transparent;
-    border: none;
-}
-
-.menu-toggle div {
-    width: 30px;
-    height: 4px;
-    background-color: white;
-    border-radius: 5px;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
 /* Navigation */
 nav {
     background-color: #333;
@@ -139,6 +119,25 @@ nav ul li a:hover {
     padding: 2px 6px;
 }
 
+.menu-toggle {
+    display: none; /* Mặc định ẩn button trên màn hình lớn */
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+}
+
+.menu-toggle div {
+    width: 30px;
+    height: 4px;
+    background-color: white;
+    border-radius: 5px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
 
 /* Responsive menu toggle - Hide menu and show hamburger in small windows */
 @media (max-width: 900px) {
@@ -156,7 +155,7 @@ nav ul li a:hover {
         top: 100%; /* Đặt div ngay dưới hamburger */
         left: 0;
         width: 100%;
-        background-color: #333;
+        background-color: transparent;
         z-index: 5;
         border-radius: 5px;
     }
@@ -181,6 +180,28 @@ nav ul li a:hover {
         transform: rotate(-10deg);
         transform-origin: 5px;
     }
+    /* Cải thiện layout của menu */
+    nav ul {
+        display: flex;
+        flex-direction: column; /* Sắp xếp menu theo chiều dọc */
+        gap: 10px;
+        padding: 10px 0;
+        width: 100%;
+    }
+
+    nav ul li a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 20px;
+        display: block;
+        transition: background-color 0.3s;
+    }
+
+    nav ul li a:hover {
+        background-color: #f39c12;
+    }
+
+
 
 }
 .banner {
