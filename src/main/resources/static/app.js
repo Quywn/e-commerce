@@ -1,9 +1,21 @@
-// Hàm để toggle menu khi nhấn vào hamburger
-const menuToggle = document.getElementById('menuToggle');
-const menuList = document.getElementById('menuList');
+function toggleSearchInput() {
+    var searchInput = document.getElementById("search-input");
+    var searchIcon = document.getElementById("search-icon");
+
+    if (searchInput.style.display === "none" || searchInput.style.display === "") {
+        searchInput.style.display = "block";
+        searchIcon.style.display = "none";
+    } else {
+        searchInput.style.display = "none";
+        searchIcon.style.display = "block";
+    }
+}
+const menuToggle = document.querySelector('.menu-toggle');
+const navMenu = document.querySelector('nav ul');
 
 menuToggle.addEventListener('click', () => {
-    menuList.classList.toggle('show');
+    navMenu.classList.toggle('open');  // Mở/đóng menu khi nhấn vào hamburger
+    menuToggle.classList.toggle('open');  // Thêm hoặc xóa lớp 'open' từ button hamburger
 });
 
 fetch('http://localhost:8080/general/products')

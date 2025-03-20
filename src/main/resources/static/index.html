@@ -5,9 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
 <header>
+    <div class="header-container">
+    <!-- Logo -->
+    <div class="logo">
+        <img src="img/design/logo.png" alt="Logo">
+    </div>
+
+    <!-- Menu list -->
     <nav>
         <ul id="menuList">
             <li><a href="#">TRANG CHỦ</a></li>
@@ -17,14 +25,28 @@
             <li><a href="#">TÀI KHOẢN</a></li>
         </ul>
 
-        <div class="menu-toggle" id="menuToggle">
+        <button class="menu-toggle">
             <div></div>
             <div></div>
             <div></div>
-        </div>
+        </button>
     </nav>
-</header>
 
+    <!-- Header right: Search and Cart -->
+    <div class="header-right">
+        <div class="search-box">
+            <i id="search-icon" class="fa fa-search" onclick="toggleSearchInput()"></i>
+            <label for="search-input"></label><input id="search-input" type="text" placeholder="Tìm kiếm..." style="display:none;">
+        </div>
+        <div class="cart">
+            <button id="cart-btn">
+                <i class="fa fa-shopping-cart"></i>
+                <span id="cart-count">0</span>
+            </button>
+        </div>
+    </div>
+    </div>
+</header>
 <section class="banner">
     <img src="img/design/banner.png" alt="Banner Shop" />
 </section>

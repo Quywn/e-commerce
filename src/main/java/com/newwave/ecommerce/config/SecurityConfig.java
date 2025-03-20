@@ -2,7 +2,6 @@ package com.newwave.ecommerce.config;
 
 
 import com.newwave.ecommerce.secure.JwtRequestFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
