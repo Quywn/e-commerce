@@ -26,6 +26,26 @@ header {
     height: 70px;
 }
 
+.menu-toggle {
+    display: none; /* Mặc định ẩn button trên màn hình lớn */
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+}
+
+.menu-toggle div {
+    width: 30px;
+    height: 4px;
+    background-color: white;
+    border-radius: 5px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
 /* Navigation */
 nav {
     background-color: #333;
@@ -118,68 +138,34 @@ nav ul li a:hover {
     border-radius: 50%;
     padding: 2px 6px;
 }
-/* Button Hamburger */
-.menu-toggle {
-    display: none; /* Mặc định ẩn button trên màn hình lớn */
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    width: 30px;
-    height: 25px;
-    cursor: pointer;
-    background-color: transparent;
-    border: none;
-}
-
-.menu-toggle div {
-    width: 30px;
-    height: 4px;
-    background-color: white;
-    border-radius: 5px;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
 
 
 /* Responsive menu toggle - Hide menu and show hamburger in small windows */
 @media (max-width: 900px) {
-    /* Header */
-    .header-container {
-        flex-direction: column; /* Đặt các phần tử trong header thành cột */
-        align-items: center; /* Căn giữa tất cả phần tử */
-        padding: 0 10px; /* Điều chỉnh padding */
+    .logo {
+        display: none;
     }
-
-    /* Logo */
-    .logo img {
-        height: 50px; /* Giảm kích thước logo khi màn hình nhỏ */
-    }
-
-    /* Navigation */
-    nav {
-        width: 100%;
-    }
-
-    /* Menu list */
-    nav ul {
-        display: none; /* Ẩn menu mặc định */
-        flex-direction: column; /* Đặt các mục trong menu theo chiều dọc */
-        gap: 10px; /* Giảm khoảng cách giữa các mục */
-        width: 100%;
-        padding: 10px 0; /* Thêm padding cho menu */
-        position: absolute; /* Đặt menu ở dưới hamburger */
-        top: 100%; /* Đặt menu ngay bên dưới hamburger */
-        z-index: 5;
-    }
-
-    /* Hiển thị menu khi nhấn vào hamburger */
     .menu-toggle {
-        cursor: pointer;
-        display: flex; /* Hiển thị hamburger icon */
-    }
-
-    nav ul.open {
         display: flex;
     }
+
+    /* Div chứa menu mặc định ẩn đi */
+    .menu-container {
+        display: none;
+        position: absolute;
+        top: 100%; /* Đặt div ngay dưới hamburger */
+        left: 0;
+        width: 100%;
+        background-color: #333;
+        z-index: 5;
+        border-radius: 5px;
+    }
+
+    /* Khi nhấn vào hamburger, hiển thị menu-container */
+    .menu-container.open {
+        display: block;
+    }
+
     /* Hiệu ứng khi mở menu (Khi hamburger được nhấn) */
     .menu-toggle.open div:nth-child(1) {
         transform: rotate(10deg);
@@ -196,25 +182,6 @@ nav ul li a:hover {
         transform-origin: 5px;
     }
 
-    nav ul li a {
-        padding: 10px;
-        font-size: 16px; /* Điều chỉnh font-size cho phù hợp */
-    }
-
-    /* Header right (search and cart) */
-    .header-right {
-        gap: 10px; /* Giảm khoảng cách giữa search box và cart */
-    }
-
-    /* Khi màn hình nhỏ, ẩn các phần khác nếu không cần thiết */
-    .search-box {
-        display: none; /* Ẩn ô tìm kiếm trên màn hình nhỏ */
-    }
-
-    /* Cart */
-    .cart {
-        display: none; /* Ẩn giỏ hàng nếu không cần thiết */
-    }
 }
 .banner {
     text-align: center;

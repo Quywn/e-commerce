@@ -11,10 +11,11 @@ function toggleSearchInput() {
     }
 }
 const menuToggle = document.querySelector('.menu-toggle');
-const navMenu = document.querySelector('nav ul');
+const menuContainer = document.querySelector('.menu-container');
 
+// Lắng nghe sự kiện click vào hamburger button
 menuToggle.addEventListener('click', () => {
-    navMenu.classList.toggle('open');  // Mở/đóng menu khi nhấn vào hamburger
+    menuContainer.classList.toggle('open');  // Mở/đóng div chứa menu
     menuToggle.classList.toggle('open');  // Thêm hoặc xóa lớp 'open' từ button hamburger
 });
 
