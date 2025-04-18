@@ -1,7 +1,7 @@
 package com.newwave.ecommerce.controller;
 
-import com.newwave.ecommerce.domain.request.LoginRequest;
-import com.newwave.ecommerce.domain.response.JwtResponse;
+import com.newwave.ecommerce.dto.request.LoginRequest;
+import com.newwave.ecommerce.dto.response.JwtResponse;
 import com.newwave.ecommerce.exception.NotFoundException;
 import com.newwave.ecommerce.secure.JwtTokenUtil;
 import com.newwave.ecommerce.service.impl.AuthServiceImpl;

@@ -1,7 +1,6 @@
 package com.newwave.ecommerce.service.impl;
 
-import com.newwave.ecommerce.domain.CategoryDTO;
-import com.newwave.ecommerce.domain.ProductDTO;
+import com.newwave.ecommerce.dto.ProductDTO;
 import com.newwave.ecommerce.entity.Category;
 import com.newwave.ecommerce.entity.Product;
 import com.newwave.ecommerce.exception.AlreadyExistsException;

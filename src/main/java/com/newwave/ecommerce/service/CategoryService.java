@@ -1,6 +1,6 @@
 package com.newwave.ecommerce.service;
 
-import com.newwave.ecommerce.domain.CategoryDTO;
+import com.newwave.ecommerce.dto.CategoryDTO;
 import java.util.List;
 
 public interface CategoryService {

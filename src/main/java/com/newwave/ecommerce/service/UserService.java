@@ -1,6 +1,6 @@
 package com.newwave.ecommerce.service;
 
-import com.newwave.ecommerce.domain.UserDTO;
+import com.newwave.ecommerce.dto.UserDTO;
 
 public interface UserService {
     String register(UserDTO user);

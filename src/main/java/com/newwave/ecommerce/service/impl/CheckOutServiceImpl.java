@@ -1,15 +1,13 @@
 package com.newwave.ecommerce.service.impl;
 
-import com.newwave.ecommerce.domain.CartDTO;
-import com.newwave.ecommerce.domain.OrderDTO;
-import com.newwave.ecommerce.domain.request.PaymentRequest;
-import com.newwave.ecommerce.domain.response.PaymentResponse;
-import com.newwave.ecommerce.exception.NotFoundException;
+import com.newwave.ecommerce.dto.CartDTO;
+import com.newwave.ecommerce.dto.OrderDTO;
+import com.newwave.ecommerce.dto.request.PaymentRequest;
+import com.newwave.ecommerce.dto.response.PaymentResponse;
 import com.newwave.ecommerce.service.CheckOutService;
 import com.newwave.ecommerce.service.PaymentDemoService;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 import static com.newwave.ecommerce.common.Constant.*;
 

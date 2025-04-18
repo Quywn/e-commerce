@@ -1,6 +1,6 @@
 package com.newwave.ecommerce.controller;
 
-import com.newwave.ecommerce.domain.ProductDTO;
+import com.newwave.ecommerce.dto.ProductDTO;
 import com.newwave.ecommerce.service.impl.ProductServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

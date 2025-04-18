@@ -1,7 +1,6 @@
 package com.newwave.ecommerce.controller;
 
-import com.newwave.ecommerce.domain.CategoryDTO;
-import com.newwave.ecommerce.service.CategoryService;
+import com.newwave.ecommerce.dto.CategoryDTO;
 import com.newwave.ecommerce.service.impl.CategoryServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

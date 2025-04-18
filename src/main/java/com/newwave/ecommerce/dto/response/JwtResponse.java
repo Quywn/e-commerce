@@ -1,4 +1,4 @@
-package com.newwave.ecommerce.domain.response;
+package com.newwave.ecommerce.dto.response;
 
 
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package com.newwave.ecommerce.controller;
 
-import com.newwave.ecommerce.domain.CartDTO;
-import com.newwave.ecommerce.domain.ProductDTO;
+import com.newwave.ecommerce.dto.CartDTO;
+import com.newwave.ecommerce.dto.ProductDTO;
 import com.newwave.ecommerce.service.impl.CartServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

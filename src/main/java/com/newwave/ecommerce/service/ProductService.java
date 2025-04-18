@@ -1,6 +1,6 @@
 package com.newwave.ecommerce.service;
 
-import com.newwave.ecommerce.domain.ProductDTO;
+import com.newwave.ecommerce.dto.ProductDTO;
 import java.util.List;
 
 public interface ProductService {

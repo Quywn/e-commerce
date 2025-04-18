@@ -1,6 +1,6 @@
 package com.newwave.ecommerce.service.impl;
 
-import com.newwave.ecommerce.domain.CategoryDTO;
+import com.newwave.ecommerce.dto.CategoryDTO;
 import com.newwave.ecommerce.entity.Category;
 import com.newwave.ecommerce.exception.AlreadyExistsException;
 import com.newwave.ecommerce.exception.NotFoundException;

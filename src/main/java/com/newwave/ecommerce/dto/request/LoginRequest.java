@@ -1,4 +1,4 @@
-package com.newwave.ecommerce.domain.request;
+package com.newwave.ecommerce.dto.request;
 
 import lombok.Data;
 

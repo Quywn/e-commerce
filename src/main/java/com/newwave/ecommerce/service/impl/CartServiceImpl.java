@@ -1,8 +1,8 @@
 package com.newwave.ecommerce.service.impl;
 
 import com.newwave.ecommerce.common.Utils;
-import com.newwave.ecommerce.domain.CartDTO;
-import com.newwave.ecommerce.domain.ProductDTO;
+import com.newwave.ecommerce.dto.CartDTO;
+import com.newwave.ecommerce.dto.ProductDTO;
 import com.newwave.ecommerce.entity.Cart;
 import com.newwave.ecommerce.entity.Product;
 import com.newwave.ecommerce.exception.InsufficientStockException;
@@ -10,9 +10,6 @@ import com.newwave.ecommerce.exception.NotFoundException;
 import com.newwave.ecommerce.repository.CartRepo;
 import com.newwave.ecommerce.repository.ProductRepo;
 import com.newwave.ecommerce.service.CartService;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;

@@ -8,4 +8,4 @@ INSERT INTO Role (role_id, role_name)
 VALUES
     (0, 'USER'),
     (1, 'ADMIN'),
-    (2, 'MANAGER');
+    (2, 'ROOT');

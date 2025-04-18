@@ -1,4 +1,4 @@
-package com.newwave.ecommerce.domain;
+package com.newwave.ecommerce.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;

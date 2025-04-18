@@ -1,10 +1,9 @@
 package com.newwave.ecommerce.service.impl;
 
-import com.newwave.ecommerce.domain.CartDTO;
-import com.newwave.ecommerce.domain.OrderDTO;
-import com.newwave.ecommerce.domain.ProductDTO;
+import com.newwave.ecommerce.dto.CartDTO;
+import com.newwave.ecommerce.dto.OrderDTO;
+import com.newwave.ecommerce.dto.ProductDTO;
 import com.newwave.ecommerce.entity.Orders;
-import com.newwave.ecommerce.entity.Product;
 import com.newwave.ecommerce.repository.OrdersRepo;
 import com.newwave.ecommerce.service.OrderDemoService;
 import org.springframework.stereotype.Service;
@@ -27,7 +26,7 @@ public class OrderServiceImpl implements OrderDemoService {
 
     @Override
     public OrderDTO addOrder(CartDTO cartDTO) {
-        String orderedProduct="";
+        String orderedProduct = "";
         for (Map.Entry<ProductDTO, Integer> entry : cartDTO.getOrderedProducts().entrySet()) {
             ProductDTO product = entry.getKey();
             Integer quantity = entry.getValue();
@@ -53,6 +52,4 @@ public class OrderServiceImpl implements OrderDemoService {
         ordersRepo.save(orders);
         return true;
     }
-
-
 }

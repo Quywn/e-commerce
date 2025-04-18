@@ -1,8 +1,8 @@
 package com.newwave.ecommerce.service.impl;
 
 import com.newwave.ecommerce.common.Constant;
-import com.newwave.ecommerce.domain.request.PaymentRequest;
-import com.newwave.ecommerce.domain.response.PaymentResponse;
+import com.newwave.ecommerce.dto.request.PaymentRequest;
+import com.newwave.ecommerce.dto.response.PaymentResponse;
 import com.newwave.ecommerce.service.PaymentDemoService;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +17,13 @@ public class PaymentServiceDemoImpl implements PaymentDemoService {
         Random random = new Random();
         switch (random.nextInt(3)) {
             case 0:
-                paymentResponse.setPaymentStatus(Constant.PaymentStatus.SUCCESS.getDescription());
+                paymentResponse.setPaymentStatus(Constant.SUCCESS);
                 break;
             case 1:
-                paymentResponse.setPaymentStatus(Constant.PaymentStatus.PROCESS.getDescription());
+                paymentResponse.setPaymentStatus(Constant.PROCESS);
                 break;
             case 2:
-                paymentResponse.setPaymentStatus(Constant.PaymentStatus.FAIL.getDescription());
+                paymentResponse.setPaymentStatus(Constant.FAIL);
                 break;
         }
         return paymentResponse;

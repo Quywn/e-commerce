@@ -1,7 +1,7 @@
 package com.newwave.ecommerce.service;
 
-import com.newwave.ecommerce.domain.CartDTO;
-import com.newwave.ecommerce.domain.OrderDTO;
+import com.newwave.ecommerce.dto.CartDTO;
+import com.newwave.ecommerce.dto.OrderDTO;
 import com.newwave.ecommerce.entity.Orders;
 import java.util.List;
 

@@ -22,7 +22,7 @@ header {
 
 /* Logo */
 .logo img {
-    height: 70px;
+    height: 75px;
 }
 
 /* Navigation */
@@ -232,8 +232,8 @@ nav ul li a:hover {
 }
 
 .product img {
-    max-width: 100%;
-    height: auto;
+    max-width: 90px;
+    height: 90px;
     border-radius: 5px;
 }
 

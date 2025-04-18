@@ -1,8 +1,8 @@
 package com.newwave.ecommerce.service.impl;
 
 import com.newwave.ecommerce.common.Utils;
-import com.newwave.ecommerce.domain.RoleDTO;
-import com.newwave.ecommerce.domain.UserDTO;
+import com.newwave.ecommerce.dto.RoleDTO;
+import com.newwave.ecommerce.dto.UserDTO;
 import com.newwave.ecommerce.entity.Role;
 import com.newwave.ecommerce.entity.User;
 import com.newwave.ecommerce.exception.NotFoundException;

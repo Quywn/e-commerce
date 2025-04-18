@@ -1,6 +1,6 @@
 package com.newwave.ecommerce.controller;
 
-import com.newwave.ecommerce.domain.UserDTO;
+import com.newwave.ecommerce.dto.UserDTO;
 import com.newwave.ecommerce.entity.Orders;
 import com.newwave.ecommerce.service.impl.OrderServiceImpl;
 import com.newwave.ecommerce.service.impl.UserServiceImpl;

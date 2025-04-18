@@ -10,7 +10,7 @@ import java.util.Date;
 public class Utils {
     public Date getDatePlusPeriodMs(String period) {
         Instant now = Instant.now();
-        Instant futureTime = now.plusMillis(Long.parseLong(period)); // 500ms
+        Instant futureTime = now.plusMillis(Long.parseLong(period));
         return Date.from(futureTime);
     }
 
@@ -18,6 +18,7 @@ public class Utils {
         return Date.from(Instant.now());
     }
 
+    //sửa
     public void checkAuthentication(String username) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
