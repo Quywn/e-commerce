@@ -21,4 +21,7 @@ public interface ProductRepo extends JpaRepository<Product,Integer> {
     @Modifying
     @Query(value = "DELETE FROM PRODUCT WHERE PRODUCT_NAME =:productName", nativeQuery = true)
     void deleteProductByProductName(@Param("productName") String productName);
+
+    @Query("SELECT p FROM Product p WHERE LOWER(p.productName) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    List<Product> searchByKeyword(@Param("keyword") String keyword);
 }

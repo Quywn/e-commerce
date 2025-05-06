@@ -26,6 +26,12 @@ public class ProductController {
                 .body(products);
     }
 
+    @GetMapping("/general/products/search")
+    public ResponseEntity<List<ProductDTO>> searchProducts(@RequestParam String keyword) {
+        List<ProductDTO> results = productService.searchProducts(keyword);
+        return ResponseEntity.ok(results);
+    }
+
     @GetMapping("/user/productsA_Z")
     public ResponseEntity<List<ProductDTO>> getProductsAZ() {
         List<ProductDTO> products = productService.getProductListA_Z();

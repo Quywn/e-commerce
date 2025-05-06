@@ -28,6 +28,22 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<ProductDTO> searchProducts(String keyword) {
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        for (Product product : productRepo.searchByKeyword(keyword)) {
+            ProductDTO productDTO = ProductDTO.builder()
+                    .productName(product.getProductName())
+                    .productCode(product.getProductCode())
+                    .quantityStock(product.getQuantityStock())
+                    .price(product.getPrice())
+                    .imageUrl(product.getImageUrl())
+                    .build();
+            productDTOList.add(productDTO);
+        }
+        return productDTOList;
+    }
+
+    @Override
     public List<ProductDTO> getAllProducts() {
         List<Product> productList = productRepo.findAll();
         List<ProductDTO> productDTOList = new ArrayList<>();

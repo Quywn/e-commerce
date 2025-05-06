@@ -12,4 +12,5 @@ public interface ProductService {
     ProductDTO addProduct(ProductDTO product);
     List<ProductDTO> getProductsByCategory(String categoryName);
     ProductDTO updateProduct(ProductDTO product);
+    List<ProductDTO> searchProducts(String keyword);
 }
