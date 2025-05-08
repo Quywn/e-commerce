@@ -42,6 +42,6 @@ public class UserController {
 
     @GetMapping("/user/history")
     public ResponseEntity<List<Orders>> getHistory(@RequestParam String username) {
-        return new ResponseEntity<>(orderServiceImpl.getOrderedByUsername(username), HttpStatus.OK);
+        return new ResponseEntity<>(orderServiceImpl.getOrdersByUsername(username), HttpStatus.OK);
     }
 }

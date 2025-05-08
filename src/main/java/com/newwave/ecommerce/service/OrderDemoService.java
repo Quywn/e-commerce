@@ -6,7 +6,7 @@ import com.newwave.ecommerce.entity.Orders;
 import java.util.List;
 
 public interface OrderDemoService {
-    List<Orders> getOrderedByUsername(String username);
+    List<Orders> getOrdersByUsername(String username);
     OrderDTO addOrder(CartDTO cartDTO);
     boolean updateStatus(String status, Long orderId);
 }

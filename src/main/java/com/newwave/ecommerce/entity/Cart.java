@@ -24,7 +24,7 @@ public class Cart implements Serializable {
     @Column(name = "cart_id")
     private Long cartId;
 
-    @Column(name = "user_name", nullable = false)
+    @Column(name = "username", nullable = false)
     private String username;
 
     @ElementCollection

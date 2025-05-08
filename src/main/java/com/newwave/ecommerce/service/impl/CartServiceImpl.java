@@ -2,6 +2,7 @@ package com.newwave.ecommerce.service.impl;
 
 import com.newwave.ecommerce.common.Utils;
 import com.newwave.ecommerce.dto.CartDTO;
+import com.newwave.ecommerce.dto.OrderItemDTO;
 import com.newwave.ecommerce.dto.ProductDTO;
 import com.newwave.ecommerce.entity.Cart;
 import com.newwave.ecommerce.entity.Product;
@@ -12,8 +13,10 @@ import com.newwave.ecommerce.repository.ProductRepo;
 import com.newwave.ecommerce.service.CartService;
 import org.springframework.stereotype.Service;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -29,10 +32,11 @@ public class CartServiceImpl implements CartService {
     @Override
     public String addProductToCart(ProductDTO product, String username) {
         this.utils.checkAuthentication(username);
-        Optional<Product> productE = productRepo.findByProductName(product.getProductName());
+        Optional<Product> productE = productRepo.findByProductCode(product.getProductCode());
         if (productE.isEmpty()) {
             throw new NotFoundException("Product not found");
         }
+
 
         if (productE.get().getQuantityStock() < product.getQuantityOrdered()) {
             throw new InsufficientStockException("Insufficient stock");
@@ -43,11 +47,15 @@ public class CartServiceImpl implements CartService {
             return "Add product successfully";
         }
 
-        Cart c = cartRepo.findCartByUsername(username).get();
-        Map<Product, Integer> orderProducts = c.getOrderProducts();
-        orderProducts.put(productE.get(), product.getQuantityOrdered());
-        c.setOrderProducts(orderProducts);
-        cartRepo.save(c);
+        try {
+            Cart c = cartRepo.findCartByUsername(username).get();
+            Map<Product, Integer> orderProducts = c.getOrderProducts();
+            orderProducts.put(productE.get(), product.getQuantityOrdered());
+            c.setOrderProducts(orderProducts);
+            cartRepo.save(c);
+        } catch (Exception e) {
+            return e.getMessage();
+        }
         return "Add product successfully";
     }
 
@@ -92,22 +100,29 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartDTO getCartByUser(String username) {
         this.utils.checkAuthentication(username);
-        if (cartRepo.findCartByUsername(username).isEmpty()) {
-            throw new NotFoundException("Cart not found by username: " + username);
-        } else {
-            Cart c = cartRepo.findCartByUsername(username).get();
-            Map<ProductDTO, Integer> productDTOIntegerMap = new HashMap<>(Map.of());
-            //todo check value
-            c.getOrderProducts().forEach((product, value) -> {
-                productDTOIntegerMap.put(buildProductDTO(product), value);
-            });
 
-            CartDTO cartDTO = new CartDTO();
-            cartDTO.setCartId(c.getCartId());
-            cartDTO.setUsername(c.getUsername());
-            cartDTO.setOrderedProducts(productDTOIntegerMap);
-            return cartDTO;
-        }
+        Cart cart = cartRepo.findCartByUsername(username)
+                .orElseThrow(() -> new NotFoundException("Cart not found by username: " + username));
+
+        List<OrderItemDTO> orderedProducts = cart.getOrderProducts().entrySet().stream()
+                .map(entry -> {
+                    Product product = entry.getKey();
+                    Integer quantity = entry.getValue();
+
+                    OrderItemDTO itemDTO = new OrderItemDTO();
+                    itemDTO.setProduct(buildProductDTO(product));
+                    itemDTO.setQuantity(quantity);
+                    return itemDTO;
+                })
+                .collect(Collectors.toList());
+
+        CartDTO cartDTO = new CartDTO();
+        cartDTO.setCartId(cart.getCartId());
+        cartDTO.setUsername(cart.getUsername());
+        cartDTO.setOrderedProducts(orderedProducts);
+        cartDTO.setStatus(cart.getStatus());
+
+        return cartDTO;
     }
 
     @Override

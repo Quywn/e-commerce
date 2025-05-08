@@ -5,6 +5,7 @@ import com.newwave.ecommerce.dto.ProductDTO;
 import com.newwave.ecommerce.service.impl.CartServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,8 +17,12 @@ public class CartController {
     }
 
     @GetMapping("/user/cart")
-    public ResponseEntity<String> getCartByUser(@RequestParam String username) {
-        return new ResponseEntity<>(cartService.getCartByUser(username).toString(), HttpStatus.OK);
+    public ResponseEntity<CartDTO> getCartByUser() {
+        String user = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
+        return new ResponseEntity<>(cartService.getCartByUser(user), HttpStatus.OK);
     }
 
     @DeleteMapping("/user/cart/clear")
@@ -31,8 +36,16 @@ public class CartController {
         return new ResponseEntity<>(cartService.removeProductFromCart(productName, username), HttpStatus.OK);
     }
 
-    @PostMapping("/user/cart/{username}")
-    public ResponseEntity<String> addProductToCart(@RequestBody ProductDTO product, @PathVariable String username) {
-        return new ResponseEntity<>(cartService.addProductToCart(product, username), HttpStatus.OK);
+    @PostMapping("/user/cart")
+    public ResponseEntity<String> addProductToCart(@RequestBody ProductDTO product) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (username == null) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User not authenticated");
     }
+
+        String result = cartService.addProductToCart(product, username);
+        return ResponseEntity.ok(result);
+    }
+
+
 }

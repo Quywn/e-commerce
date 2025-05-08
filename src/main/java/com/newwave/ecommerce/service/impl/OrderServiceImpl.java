@@ -2,6 +2,7 @@ package com.newwave.ecommerce.service.impl;
 
 import com.newwave.ecommerce.dto.CartDTO;
 import com.newwave.ecommerce.dto.OrderDTO;
+import com.newwave.ecommerce.dto.OrderItemDTO;
 import com.newwave.ecommerce.dto.ProductDTO;
 import com.newwave.ecommerce.entity.Orders;
 import com.newwave.ecommerce.repository.OrdersRepo;
@@ -9,7 +10,6 @@ import com.newwave.ecommerce.service.OrderDemoService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class OrderServiceImpl implements OrderDemoService {
@@ -20,28 +20,40 @@ public class OrderServiceImpl implements OrderDemoService {
     }
 
     @Override
-    public List<Orders> getOrderedByUsername(String username) {
+    public List<Orders> getOrdersByUsername(String username) {
         return ordersRepo.findAllByUsername(username);
     }
 
     @Override
     public OrderDTO addOrder(CartDTO cartDTO) {
-        String orderedProduct = "";
-        for (Map.Entry<ProductDTO, Integer> entry : cartDTO.getOrderedProducts().entrySet()) {
-            ProductDTO product = entry.getKey();
-            Integer quantity = entry.getValue();
-            orderedProduct= "Product:" + product.getProductName() + ", Quantity: " + quantity;
+        // Ghép các sản phẩm + số lượng thành chuỗi mô tả đơn hàng
+        StringBuilder orderedProductBuilder = new StringBuilder();
+
+        for (OrderItemDTO item : cartDTO.getOrderedProducts()) {
+            ProductDTO product = item.getProduct();
+            Integer quantity = item.getQuantity();
+
+            orderedProductBuilder.append("Product: ")
+                    .append(product.getProductName())
+                    .append(", Quantity: ")
+                    .append(quantity)
+                    .append(" | "); // thêm dấu phân cách nếu nhiều sản phẩm
         }
+
+        // Xoá dấu "|" cuối nếu có
+        String orderedProduct = orderedProductBuilder.toString().replaceAll(" \\| $", "");
 
         Orders orders = new Orders();
         orders.setUsername(cartDTO.getUsername());
         orders.setOrderedProduct(orderedProduct);
-        orders.setUsername(cartDTO.getUsername());
+        orders.setOrderStatus(cartDTO.getStatus() != null ? cartDTO.getStatus() : "PENDING");
+
         ordersRepo.save(orders);
 
         OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setUsername(cartDTO.getUsername());
+        orderDTO.setUsername(orders.getUsername());
         orderDTO.setOrderId(orders.getOrderId());
+
         return orderDTO;
     }
 

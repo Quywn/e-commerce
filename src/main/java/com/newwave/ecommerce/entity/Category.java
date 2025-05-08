@@ -3,10 +3,13 @@ package com.newwave.ecommerce.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
+
 import java.util.List;
 
 @Entity
 @Data
+@ToString(exclude = "products")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
