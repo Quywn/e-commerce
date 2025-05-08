@@ -2,6 +2,7 @@ package com.newwave.ecommerce.controller;
 
 import com.newwave.ecommerce.dto.CartDTO;
 import com.newwave.ecommerce.dto.ProductDTO;
+import com.newwave.ecommerce.dto.request.UpdateQuantityRequest;
 import com.newwave.ecommerce.service.impl.CartServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,16 @@ public class CartController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
         return new ResponseEntity<>(cartService.getCartByUser(user), HttpStatus.OK);
+    }
+
+    @PutMapping("cart/{username}/product/{productCode}")
+    public ResponseEntity<?> updateProductQuantityInCart(
+            @PathVariable String username,
+            @PathVariable String productCode,
+            @RequestBody UpdateQuantityRequest request
+    ) {
+        cartService.updateProductQuantity(username, productCode, request.getQuantity());
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/user/cart/clear")

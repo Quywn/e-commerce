@@ -139,6 +139,21 @@ public class CartServiceImpl implements CartService {
         return getCartByUser(username);
     }
 
+    @Override
+    public void updateProductQuantity(String username, String productCode, int quantity) {
+        Cart cart = cartRepo.findCartByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Cart not found for user: " + username));
+
+        Product product = productRepo.findByProductCode(productCode)
+                .orElseThrow(() -> new RuntimeException("Product not found: " + productCode));
+
+        // Update quantity
+        cart.getOrderProducts().put(product, quantity);
+
+        // Save cart
+        cartRepo.save(cart);
+    }
+
     private void createCart(Product productE, String username, int quantityOrdered) {
         Cart cart = new Cart();
         cart.setUsername(username);
@@ -157,4 +172,5 @@ public class CartServiceImpl implements CartService {
                 .price(product.getPrice())
                 .imageUrl(product.getImageUrl())
                 .build();
-    }}
+    }
+}

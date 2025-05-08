@@ -51,6 +51,8 @@ public class UserServiceImpl implements UserService {
                 .email(userDTO.getEmail())
                 .password(passwordEncoder.encode(userDTO.getPassword()))
                 .roles(rolesEntity)
+                .address(userDTO.getAddress())
+                .phone(userDTO.getPhone())
                 .build();
         try {
             userRepo.save(user);
@@ -69,6 +71,8 @@ public class UserServiceImpl implements UserService {
         return UserDTO.builder()
                 .username(user.get().getUsername())
                 .email(user.get().getEmail())
+                .address(user.get().getAddress())
+                .phone(user.get().getPhone())
                 .build();
     }
 
@@ -85,6 +89,8 @@ public class UserServiceImpl implements UserService {
                 .username(userDTO.getUsername())
                 .email(userDTO.getEmail())
                 .password(passwordEncoder.encode(userDTO.getPassword()))
+                .phone(userDTO.getPhone())
+                .address(userDTO.getAddress())
                 .build();
         return "User success updated: " + userRepo.save(newUser).getUsername();
     }

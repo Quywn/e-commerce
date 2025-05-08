@@ -10,4 +10,5 @@ public interface CartService {
     CartDTO getCartByUser(String username);
     String addProductToCart(ProductDTO product, String username);
     String removeProductFromCart(String productName, String username);
+    void updateProductQuantity(String username, String productCode, int quantity);
 }

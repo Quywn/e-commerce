@@ -16,6 +16,8 @@ public class UserDTO implements Serializable {
     private String username;
     @NotNull
     private String email;
+    private String phone;
+    private String address;
     private String password;
     private List<RoleDTO> roles;
 }

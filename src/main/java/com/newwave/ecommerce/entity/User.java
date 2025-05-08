@@ -30,6 +30,10 @@ public class User implements Serializable {
     private String password;
     @Column(name = "email", nullable = false)
     private String email;
+    @Column(name = "phone", nullable = true)
+    private String phone;
+    @Column(name = "address",nullable = true)
+    private String address;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(
