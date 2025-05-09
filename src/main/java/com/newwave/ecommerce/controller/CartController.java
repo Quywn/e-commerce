@@ -43,8 +43,8 @@ public class CartController {
     }
 
     @DeleteMapping("user/cart/product")
-    public ResponseEntity<String> removeProductFromCart(@RequestParam String productName, @RequestParam String username) {
-        return new ResponseEntity<>(cartService.removeProductFromCart(productName, username), HttpStatus.OK);
+    public ResponseEntity<String> removeProductFromCart(@RequestParam String productCode, @RequestParam String username) {
+        return new ResponseEntity<>(cartService.removeProductFromCart(productCode, username), HttpStatus.OK);
     }
 
     @PostMapping("/user/cart")

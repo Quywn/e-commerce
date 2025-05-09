@@ -1,24 +1,29 @@
 package com.newwave.ecommerce.entity;
 
+import com.newwave.ecommerce.entity.OrderItem;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "orders")
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Builder
+@ToString(exclude = "items")
 public class Orders {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "orders_id")
     private Long orderId;
+
     private String username;
-    private String orderedProduct;
+
     private String orderStatus;
 
-
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<OrderItem> items = new ArrayList<>();
 }

@@ -1,9 +1,11 @@
 package com.newwave.ecommerce.controller;
 
+import com.newwave.ecommerce.dto.OrderDTO;
 import com.newwave.ecommerce.dto.UserDTO;
 import com.newwave.ecommerce.entity.Orders;
 import com.newwave.ecommerce.service.impl.OrderServiceImpl;
 import com.newwave.ecommerce.service.impl.UserServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +43,17 @@ public class UserController {
     }
 
     @GetMapping("/user/history")
-    public ResponseEntity<List<Orders>> getHistory(@RequestParam String username) {
+    public ResponseEntity<List<OrderDTO>> getHistory(@RequestParam String username) {
         return new ResponseEntity<>(orderServiceImpl.getOrdersByUsername(username), HttpStatus.OK);
     }
+
+    @PostMapping("/root/createAdmin")
+    public ResponseEntity<String> createAdmin(@RequestBody UserDTO userDTO) {
+        return ResponseEntity.ok(userService.createAdmin(userDTO));
+    }
+    @GetMapping("/admin/users")
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
+    }
+
 }

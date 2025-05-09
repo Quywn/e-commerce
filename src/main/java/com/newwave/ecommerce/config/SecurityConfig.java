@@ -30,9 +30,9 @@ public class SecurityConfig{
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN", "MANAGER")
-                        .requestMatchers("/manager/**").hasAnyRole("MANAGER", "ADMIN")
+                        .requestMatchers("/root/**").hasRole("ROOT")
+                        .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN", "ROOT")
+                        .requestMatchers("/admin/**").hasAnyRole("ROOT", "ADMIN")
                         .requestMatchers("/login", "/register", "/general/**").permitAll()
                         .anyRequest().authenticated()
                 )

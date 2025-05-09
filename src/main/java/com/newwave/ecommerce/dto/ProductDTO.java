@@ -27,4 +27,9 @@ public class ProductDTO {
     private String imageUrl;
 
 
+    public ProductDTO( String productName, double price) {
+        this.productName = productName;
+        this.price = price;
+
+    }
 }

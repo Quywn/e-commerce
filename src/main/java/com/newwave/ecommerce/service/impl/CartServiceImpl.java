@@ -12,10 +12,8 @@ import com.newwave.ecommerce.repository.CartRepo;
 import com.newwave.ecommerce.repository.ProductRepo;
 import com.newwave.ecommerce.service.CartService;
 import org.springframework.stereotype.Service;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,30 +57,41 @@ public class CartServiceImpl implements CartService {
         return "Add product successfully";
     }
 
-
     @Override
-    public String removeProductFromCart(String productName, String username) {
+    public String removeProductFromCart(String productCode, String username) {
         this.utils.checkAuthentication(username);
         Optional<Cart> cartOptional = cartRepo.findCartByUsername(username);
         if (cartOptional.isEmpty()) {
             throw new NotFoundException("Cart not found by username: " + username);
         }
-        Map<Product, Integer> orderProducts = cartOptional.get().getOrderProducts();
-        orderProducts.forEach((product, value) -> {
-            if (product.getProductName().equals(productName)) {
-                orderProducts.remove(product);
-            }
-        });
-        Cart cart = Cart.builder()
-                .cartId(cartOptional.get().getCartId())
-                .username(username)
-                .orderProducts(orderProducts)
-                .build();
 
-        cartRepo.save(cart);
+        try {
+            Map<Product, Integer> orderProducts = cartOptional.get().getOrderProducts();
+
+            // Duyệt Map bằng Iterator để tránh ConcurrentModificationException
+            Iterator<Map.Entry<Product, Integer>> iterator = orderProducts.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<Product, Integer> entry = iterator.next();
+                if (entry.getKey().getProductCode().equals(productCode)) {
+                    iterator.remove();
+                    break;
+                }
+            }
+
+            Cart cart = Cart.builder()
+                    .cartId(cartOptional.get().getCartId())
+                    .username(username)
+                    .orderProducts(orderProducts)
+                    .build();
+
+            cartRepo.save(cart);
+        } catch (Exception e) {
+            return e.getMessage();
+        }
 
         return "Delete product successfully";
     }
+
 
     public Double getCartTotal(CartDTO cart) {
 //        this.utils.checkAuthentication(cart.getUsername());
