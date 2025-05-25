@@ -21,12 +21,12 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.addCategory(categoryDTO), HttpStatus.CREATED);
     }
 
-    @GetMapping("/user/categories")
+    @GetMapping("/general/categories")
     public ResponseEntity<List<CategoryDTO>> getAllCategories() {
         return new ResponseEntity<>(categoryService.getAllCategories(), HttpStatus.OK);
     }
 
-    @GetMapping("/user/category")
+    @GetMapping("/general/category")
     public ResponseEntity<CategoryDTO> getCategory(String categoryName) {
         return new ResponseEntity<>(categoryService.getCategory(categoryName), HttpStatus.OK);
     }

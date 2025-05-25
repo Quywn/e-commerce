@@ -18,7 +18,6 @@ public class Utils {
         return Date.from(Instant.now());
     }
 
-    //sửa
     public void checkAuthentication(String username) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();

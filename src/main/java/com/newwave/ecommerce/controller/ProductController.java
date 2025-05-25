@@ -63,7 +63,7 @@ public class ProductController {
         return new ResponseEntity<>(productService.removeProductByName(productName), HttpStatus.OK);
     }
 
-    @GetMapping("/user/product/category")
+    @GetMapping("/general/product/category")
     public ResponseEntity<List<ProductDTO>> getProductsByCategory(@RequestParam String categoryName) {
         List<ProductDTO> products = productService.getProductsByCategory(categoryName);
         return new ResponseEntity<>(products, HttpStatus.OK);

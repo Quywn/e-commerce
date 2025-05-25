@@ -15,8 +15,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-
-        // 👇 Thay bằng origin của FE nếu bạn deploy, VD: "http://localhost:8080"
         config.setAllowedOriginPatterns(List.of("http://localhost:8080"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
@@ -29,10 +27,10 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")  // Áp dụng CORS cho tất cả các endpoint
-                .allowedOrigins("http://localhost:8080")  // Địa chỉ của frontend
-                .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS")  // Các phương thức HTTP cho phép
-                .allowedHeaders("*")  // Cho phép tất cả các header
-                .allowCredentials(true);  // Nếu cần gửi cookie, JWT, v.v.
+        registry.addMapping("/**")  // ADD CORS all endpoints
+                .allowedOrigins("http://localhost:8080")  // frontend
+                .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS")
+                .allowedHeaders("*")  // Allowed all headers
+                .allowCredentials(true);  // Allowed send cookie, JWT, v.v.
     }
 }
